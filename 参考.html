@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style >
+        /*body{background:url(img/video.jpg) no-repeat;width:1280px;float:left;}*/
+        .category-main-left{width:263px;margin-left:-10px;float:left;}
+        .category-main-left-header{width:298px;margin-left:65px;}
+        .category-main-left-header-span{font-size:44px;color:rgb(169, 152, 189);font-weight:800;}
+        .category-main-left-div .category-main-left-div-sub{padding-top:15px;padding-bottom:15px;width:168px;margin-left:65px;}
+        .category-main-left-div .category-main-left-div-span{font-size:24px;color:rgb(127, 114, 142);font-weight:600;color:rgb(165, 141, 141);}
+        .category-active .category-main-left-div-span{color:white;}
+        .category-active{background-color:rgb(253, 149, 91);}
+        .category-selected .category-main-left-div-span{color:rgb(255, 188, 70);}
+
+        .content-img-size{width:160px;height:240px;}
+        .category-main-right-header{width:1018px;text-align:center;padding-top:30px;}
+        .category-main-right-header-span{float:right;color:rgb(165, 141, 141);font-size:25px;padding-right:55px;margin-top:-15px;}
+        .content-team{float:left;}
+        .category-main-right-content{width:1018px;padding-top:2px;}
+        .category-main-right-content-div-first{margin:0px 20px 20px 20px;float:left;}
+        .category-main-right-content-div-img{padding:5px 5px 2px 5px;margin:12px;position: relative;}
+        .content-active .category-main-right-content-div-img{background-color:rgb(253, 149, 91);}
+        .category-main-right-content-div-img-free{position:absolute;top:30px; }
+        .content-team .content-team-title{font-size:20px;color:rgb(171, 159, 175);}
+        .content-active .content-team-title{color:rgb(255,255,255);}
+        .category-main-right-content-div-span{text-align:center;}
+        .category-main-right-footer{width:1018px;text-align:center;padding-top:50px;margin-left:-7px;}
+    </style>
+
+</head>
+<body  >
+<div  class="categroy-main" >
+    <div class="category-main-left"   >
+        <div style="margin-top:30px;"  >
+            <div class="category-main-left-header"  >
+                <span  class="category-main-left-header-span"   >纪实</span>
+            </div>
+            <div style="margin-top:20px;">
+            </div>
+            <div class="category-main-left-div category-active category-selected"  id="category-menu-1" >
+                <div class="category-main-left-div-sub" >
+                    <span class="category-main-left-div-span"   >新片推荐</span>
+                </div>
+            </div>
+            <div class="category-main-left-div"  id="category-menu-2" >
+                <div class="category-main-left-div-sub" >
+                    <span class="category-main-left-div-span"  >全部推荐</span>
+                </div>
+            </div>
+            <div class="category-main-left-div" id="category-menu-3" >
+                <div class="category-main-left-div-sub" >
+                    <span  class="category-main-left-div-span"  >自然探秘</span>
+                </div>
+            </div>
+            <div class="category-main-left-div" id="category-menu-4" >
+                <div class="category-main-left-div-sub" >
+                    <span  class="category-main-left-div-span"  >历史人文</span>
+                </div>
+            </div>
+            <div class="category-main-left-div"  id="category-menu-5" >
+                <div class="category-main-left-div-sub" >
+                    <span  class="category-main-left-div-span" >铁血军事</span>
+                </div>
+            </div>
+            <div class="category-main-left-div"  id="category-menu-6" >
+                <div class="category-main-left-div-sub" >
+                    <span  class="category-main-left-div-span"  >科技前沿</span>
+                </div>
+            </div>
+            <div class="category-main-left-div"  id="category-menu-7" >
+                <div class="category-main-left-div-sub" >
+                    <span  class="category-main-left-div-span"  >政治时事</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="category-main-right"  style="float:left;"  >
+        <div  class="category-main-right-header"  >
+            <img src="images/icon_up_nor.png"  id="upPage" style="margin-left:90px;"  />
+            <span  class="category-main-right-header-span" style="" >1/45</span>
+        </div>
+        <div  class="category-main-right-content"  >
+            <div class="category-main-right-content-div-first"  >
+                <div class="content-team"  id="content-1" >
+                    <div  class="category-main-right-content-div-img" >
+                        <img src="images/img_size_b.png"  class="content-img-size"  />
+                        <img src="images/pic_free.png" class="category-main-right-content-div-img-free"  />
+                    </div>
+                    <div class="category-main-right-content-div-span"  >
+                        <span class="content-team-title" >TFBOY MV</span>
+                    </div>
+                </div>
+                <div class="content-team" id="content-2" >
+                    <div class="category-main-right-content-div-img">
+                        <img src="img/video.jpg" class="content-img-size"  />
+                        <img src="images/pic_free.png" class="category-main-right-content-div-img-free" />
+                    </div>
+                    <div  class="category-main-right-content-div-span"  >
+                        <span class="content-team-title" >头脑特工队</span>
+                    </div>
+                </div>
+                <div class="content-team"  id="content-3" >
+                    <div class="category-main-right-content-div-img" >
+                        <img src="img/video.jpg"  class="content-img-size"  />
+                        <img src="images/pic_free.png" class="category-main-right-content-div-img-free"   />
+                    </div>
+                    <div class="category-main-right-content-div-span"  >
+                        <span class="content-team-title" >头脑特工队</span>
+                    </div>
+                </div>
+                <div class="content-team"  id="content-4" >
+                    <div class="category-main-right-content-div-img" >
+                        <img src="img/video.jpg"  class="content-img-size"  />
+                        <img src="images/pic_free.png" class="category-main-right-content-div-img-free"  />
+                    </div>
+                    <div class="category-main-right-content-div-span"  >
+                        <span class="content-team-title" >头脑特工队</span>
+                    </div>
+                </div>
+                <div class="content-team" id="content-5" >
+                    <div class="category-main-right-content-div-img" >
+                        <img src="img/video.jpg"  class="content-img-size"  />
+                        <img src="images/pic_free.png" class="category-main-right-content-div-img-free"  />
+                    </div>
+                    <div class="category-main-right-content-div-span"  >
+                        <span class="content-team-title" >头脑特工队</span>
+                    </div>
+                </div>
+                <div class="content-team" id="content-6" >
+                    <div class="category-main-right-content-div-img" >
+                        <img src="img/video.jpg"  class="content-img-size"  />
+                        <img src="images/pic_free.png" class="category-main-right-content-div-img-free"  />
+                    </div>
+                    <div class="category-main-right-content-div-span"  >
+                        <span class="content-team-title" >头脑特工队</span>
+                    </div>
+                </div>
+                <div class="content-team" id="content-7" >
+                    <div class="category-main-right-content-div-img" >
+                        <img src="img/video.jpg"  class="content-img-size"  />
+                        <img src="images/pic_free.png" class="category-main-right-content-div-img-free"  />
+                    </div>
+                    <div class="category-main-right-content-div-span"  >
+                        <span class="content-team-title" >头脑特工队</span>
+                    </div>
+                </div>
+                <div class="content-team" id="content-8" >
+                    <div class="category-main-right-content-div-img" >
+                        <img src="img/video.jpg"  class="content-img-size"   />
+                        <img src="images/pic_free.png" class="category-main-right-content-div-img-free"  />
+                    </div>
+                    <div class="category-main-right-content-div-span"  >
+                        <span class="content-team-title" >头脑特工队</span>
+                    </div>
+                </div>
+                <div class="content-team" id="content-9" >
+                    <div class="category-main-right-content-div-img" >
+                        <img src="img/video.jpg"  class="content-img-size"   />
+                        <img src="images/pic_free.png" class="category-main-right-content-div-img-free"  />
+                    </div>
+                    <div class="category-main-right-content-div-span"  >
+                        <span class="content-team-title content-team-title-current" >头脑特工队</span>
+                    </div>
+                </div>
+                <div class="content-team"  id="content-10"  >
+                    <div class="category-main-right-content-div-img" >
+                        <img src="img/video.jpg"  class="content-img-size"  />
+                        <img src="images/pic_free.png" class="category-main-right-content-div-img-free"  />
+                    </div>
+                    <div class="category-main-right-content-div-span"  >
+                        <span class="content-team-title"  >头脑特工队</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div  class="category-main-right-footer"  >
+            <img src="images/icon_down_nor.png" id="downPage"    />
+        </div>
+
+        <div>
+
+        </div>
+
+</body>
+<script type="text/javascript">
+    var contentCurrentId=1;
+    var categoryCurrentId=1;    // 当前记录  
+    var categorySelectedId=1;  // 历史选中记录  
+    var totalCount=7;           //栏目数  
+    var totalContentCount=10;   //内容数  
+    var currentType="content";  //当前焦点在menu菜单上 还是在content内容上
+    if(totalContentCount<=5){
+        document.getElementById("downPage").style.display="none";
+    }
+    function jumpPage(event) {
+
+        if (event.keyCode==37 || event.keyCode=="KEY_LEFT")//左   
+            fun_left();
+        if (event.keyCode==38 || event.keyCode=="KEY_UP")//上   
+            fun_up();
+        if (event.keyCode==39 || event.keyCode=="KEY_RIGHT" )//右   
+            fun_right();
+        if (event.keyCode==40 || event.keyCode=="KEY_DOWN" )//下   
+            fun_down();
+        if (event.keyCode==13 || event.keyCode=="KEY_ENTER")//enter   
+            fun_enter();
+    }
+
+
+    function fun_left(){
+        if( currentType=="content" && contentCurrentId!=1 ){
+            removeClass("content-active","content-"+contentCurrentId);
+            contentCurrentId=contentCurrentId-1;
+            document.getElementById("content-"+contentCurrentId).className+=" content-active";
+            if(contentCurrentId<=5){
+                document.getElementById("upPage").src="images/icon_up_selected.png";
+                document.getElementById("downPage").src="images/icon_down_nor.png";
+            }
+        }else if(currentType=="content" && contentCurrentId==1 ){
+            currentType="menu";
+            removeClass("content-active","content-"+contentCurrentId);
+            document.getElementById("upPage").src="images/icon_up_nor.png";
+            removeClass("category-selected","category-menu-"+categorySelectedId);
+            categorySelectedId=categoryCurrentId;
+            document.getElementById("category-menu-"+categorySelectedId).className+=" category-selected";
+        }
+    }
+    function fun_right(){
+        if( currentType=="content" && contentCurrentId<totalContentCount ){
+            removeClass("content-active","content-"+contentCurrentId);
+            contentCurrentId=contentCurrentId+1;
+            document.getElementById("content-"+contentCurrentId).className+=" content-active";
+            if(contentCurrentId>5){
+                document.getElementById("upPage").src="images/icon_up_nor.png";
+                document.getElementById("downPage").src="images/icon_down_selected.png";
+            }
+        }else if(currentType=="menu" ){
+            currentType="content";
+            removeClass("content-active","content-"+contentCurrentId);
+            document.getElementById("content-"+contentCurrentId).className+=" content-active";
+            document.getElementById("upPage").src="images/icon_up_selected.png";
+        }
+    }
+    function fun_up(){
+        if( currentType=="content" && contentCurrentId>5){
+            removeClass("content-active","content-"+contentCurrentId);
+            contentCurrentId=contentCurrentId-5;
+            document.getElementById("content-"+contentCurrentId).className+=" content-active";
+            if(contentCurrentId<=5){
+                document.getElementById("upPage").src="images/icon_up_selected.png";
+                document.getElementById("downPage").src="images/icon_down_nor.png";
+            }
+        }else if( currentType=="content" && contentCurrentId<=5){
+            alert("Page up");
+        }else if(currentType=="menu" && categoryCurrentId!=1 ){
+            removeClass("category-active","category-menu-"+categoryCurrentId);
+            categoryCurrentId=categoryCurrentId-1;
+            document.getElementById("category-menu-"+categoryCurrentId).className+=" category-active";
+        }
+    }
+    function fun_down(){
+        if( currentType=="content" && contentCurrentId<=5 ){
+            removeClass("content-active","content-"+contentCurrentId);
+            contentCurrentId=contentCurrentId+5;
+            if(contentCurrentId>totalContentCount){
+                contentCurrentId=contentCurrentId-5;
+                document.getElementById("content-"+contentCurrentId).className+=" content-active";
+            }else{
+                document.getElementById("content-"+contentCurrentId).className+=" content-active";
+                if(contentCurrentId>5){
+                    document.getElementById("upPage").src="images/icon_up_nor.png";
+                    document.getElementById("downPage").src="images/icon_down_selected.png";
+                }
+            }
+
+        }else if( currentType=="content" && contentCurrentId>5){
+            alert("Page down");
+        }else if(currentType=="menu" && categoryCurrentId!=totalCount ){
+            removeClass("category-active","category-menu-"+categoryCurrentId);
+            categoryCurrentId=categoryCurrentId+1;
+            document.getElementById("category-menu-"+categoryCurrentId).className+=" category-active";
+        }
+    }
+
+    function fun_enter(){
+        if(currentType=="menu"){
+            alert("type:"+currentType+"=>Id:"+categoryCurrentId);
+        }else{
+            alert("type:"+currentType+"=>Id:"+contentCurrentId)
+        }
+
+    }
+
+
+    document.onkeydown=jumpPage;
+    function removeClass(removeClassName,selectedId){
+        var classNames = document.getElementById(selectedId).className;
+        classNames=classNames.replace(/(^\s*)|(\s*$)/g, "");
+        var classNameArr = classNames.split(" ");
+        var okClassNames = "";
+        for (var ii = 0; ii < classNameArr.length; ii++) {
+            if(!(classNameArr[ii]==removeClassName)){
+                okClassNames+=" "+classNameArr[ii];
+            }
+        }
+        document.getElementById(selectedId).className=okClassNames;
+    }
+</script>
+</html>
