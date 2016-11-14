@@ -59,6 +59,9 @@ $(function () {
             removeClass("active","filter-sub",filterCurrentId);
             filterCurrentId=filterCurrentId-1;
             addClass("filter-sub",filterCurrentId);
+        }else if(currentType=="filterItem" && filterCurrentId==1){
+            removeClass("active","filter-sub",filterCurrentId);
+            currentType="filter";
         }
     }
     // 右键
