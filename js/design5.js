@@ -78,7 +78,7 @@ $(function () {
             currentType="content";
             contentCurrentId=1;
             removeClass("active","item-content-sub",contentCurrentId);
-            contentCurrentId +=1;
+            // contentCurrentId +=1;
             addClass("item-content-sub",contentCurrentId);
             //alert("currentType"+currentType+"contentCurrentId"+contentCurrentId+"totalContentCount"+totalContentCount);
         }
