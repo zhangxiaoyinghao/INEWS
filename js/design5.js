@@ -74,9 +74,6 @@ $(function () {
             if(contentCurrentId > 6){
                 moveScroll("down");
             }
-
-
-
         }else if(currentType=="menu" ){
             currentType="content";
             contentCurrentId=1;
@@ -103,7 +100,6 @@ $(function () {
             return;
         }else if(currentType=="menu" && categoryCurrentId!=1 ){
             removeClass("active","item-child",categoryCurrentId);
-
             // 切换内容区
             $(document.getElementById("item-area-"+categoryCurrentId)).removeClass("content-block");
             categoryCurrentId=categoryCurrentId-1;
