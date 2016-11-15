@@ -268,8 +268,6 @@ $(function () {
     function scrollAble(scroll_begin,scroll_end,scroll_div,flag,scrollFlag) {
         var speed=30;
         scroll_end.innerHTML=scroll_begin.innerHTML;
-        var MyMar=[];
-        //MyMar[scrollFlag]=setInterval(Marquee,speed);
         function stopScroll() {
             clearInterval(scrollFlag.MyMar);
         }
