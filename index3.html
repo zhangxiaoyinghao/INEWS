@@ -21,7 +21,7 @@
             <li class="item"><span id="category-menu-9" class="item-child">娱 乐</span></li>
         </ul>
     </div>
-    <div id="item-content" style="max-height: 775px;overflow-y: auto">
+    <div id="item-content">
         <!--栏目筛选项-->
         <div id="filter-items" class="">
             <div id="filter-title">栏目筛选项：</div>
@@ -490,7 +490,22 @@
         </ul>
     </div>
 </div>
+<!--警示弹框-->
+<div id="warn-message">
+    <img src="img/warn.jpg">
+    <div class="messages">
+        <p class="p1">操作提示</p>
+        <p class="p2">不知道什么错误。。。。。</p>
+        <p class="p3">3s后自动消失</p>
+    </div>
+
+</div>
 </body>
 <script type="text/javascript" src="js/jquery-3.1.1.min.js"></script>
 <script type="text/javascript" src="js/design3.js"></script>
+<script type="text/javascript">
+    var $maxHeight = $(window).height() + "px";
+    $("#item-content").css("max-height",$maxHeight);
+    $("#item-content").css("overflow-y","auto");
+</script>
 </html>

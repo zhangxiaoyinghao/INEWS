@@ -39,6 +39,9 @@ $(function () {
             warn_alert();//按A字母键弹框，测试用
         }
     }
+
+    
+
     // 左键
     function fun_left(){
         // 内容区，并且不是第一个
@@ -46,11 +49,6 @@ $(function () {
             removeClass("active","item-content-sub",contentCurrentId);
             contentCurrentId=contentCurrentId-1;
             addClass("item-content-sub",contentCurrentId);
-
-            //需要移动滚动条的时候
-            if(contentCurrentId < totalContentCount-4){
-                moveScroll("up");
-            }
         }else if(currentType=="content" && contentCurrentId==1 ){
             currentType="menu";
             categorySelectedId=categoryCurrentId;
@@ -59,9 +57,6 @@ $(function () {
             removeClass("active","filter-sub",filterCurrentId);
             filterCurrentId=filterCurrentId-1;
             addClass("filter-sub",filterCurrentId);
-        }else if(currentType=="filterItem" && filterCurrentId==1){
-            removeClass("active","filter-sub",filterCurrentId);
-            currentType="filter";
         }
     }
     // 右键
@@ -70,15 +65,11 @@ $(function () {
             removeClass("active","item-content-sub",contentCurrentId);
             contentCurrentId=contentCurrentId+1;
             addClass("item-content-sub",contentCurrentId);
-            //需要移动滚动条的时候
-            if(contentCurrentId > 6){
-                moveScroll("down");
-            }
         }else if(currentType=="menu" ){
             currentType="content";
             contentCurrentId=1;
             removeClass("active","item-content-sub",contentCurrentId);
-            // contentCurrentId +=1;
+            contentCurrentId +=1;
             addClass("item-content-sub",contentCurrentId);
             //alert("currentType"+currentType+"contentCurrentId"+contentCurrentId+"totalContentCount"+totalContentCount);
         }
@@ -100,10 +91,12 @@ $(function () {
             return;
         }else if(currentType=="menu" && categoryCurrentId!=1 ){
             removeClass("active","item-child",categoryCurrentId);
+
             // 切换内容区
             $(document.getElementById("item-area-"+categoryCurrentId)).removeClass("content-block");
             categoryCurrentId=categoryCurrentId-1;
             addClass("item-child",categoryCurrentId);
+
             document.getElementById("item-area-"+categoryCurrentId).className+=" content-block";
             contentCurrentId=1;
             //更新内容数量

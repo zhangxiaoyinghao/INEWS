@@ -84,7 +84,7 @@ html{background-color:#1e1e1e}
     height: 30%;
     background-color: #212121;
     position: fixed;
-    z-index: 999;
+    z-index: 998;
     padding-top: 4%;
     display: none;
 }
@@ -153,6 +153,7 @@ html{background-color:#1e1e1e}
     display: inline-block;
     width:40%;
     height: 100%;
+    position: relative;
 }
 #item-content>ul>li .item-img>img{
     display: inline-block;
@@ -161,18 +162,38 @@ html{background-color:#1e1e1e}
     margin-left: 3%;
     margin-top: 3%;
 }
+#item-content>ul>li .item-img .video-img{
+    background-image: url("../img/bg.png");
+    background-size: 100% 100%;
+}
+#item-content>ul>li .item-img .videoM{
+    position: absolute;
+    z-index: 997;
+    width: 40%;
+    height: 58%;
+    left: 25%;
+    top: 16%;
+}
 #item-content>ul>li .item-msg{
     display: inline-block;
     width: 57%;
     height: 100%;
-    /*background-color: palevioletred;*/
     vertical-align: top;
 }
-#item-content>ul>li .item-msg>p{
+#item-content>ul>li .item-msg .scroll_div{
+    width: 80%;
+    /*width: 200px;*/
+    white-space: nowrap;
+    overflow:hidden;
+}
+#item-content>ul>li .item-msg p{
     margin-top: 10px;
 }
-#item-content>ul>li .item-msg>p.item-msg-title{
+#item-content>ul>li .item-msg p.item-msg-title{
     font-size: 25px;
+    width:auto;
+    display: inline-block;
+
 }
 /*警示弹框*/
 #warn-message{
