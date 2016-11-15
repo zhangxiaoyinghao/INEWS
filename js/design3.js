@@ -34,6 +34,9 @@ $(function () {
         if (event.keyCode==8){
             fun_back();//BackSpace
         }
+        if (event.keyCode==65){
+            warn_alert();//按A字母键弹框，测试用
+        }
     }
     // 左键
     function fun_left(){
@@ -81,6 +84,8 @@ $(function () {
             removeClass("item-content-sub-active","content-"+contentCurrentId);
             contentCurrentId=contentCurrentId-2;
             document.getElementById("content-"+contentCurrentId).className+=" item-content-sub-active";
+            /* 滚动条向上移动*/
+            moveScroll("up");
         }else if( currentType=="content" && contentCurrentId<=2){
             return;
         }else if(currentType=="menu" && categoryCurrentId!=1 ){
@@ -117,7 +122,7 @@ $(function () {
                     }else{
                         document.getElementById("content-"+contentCurrentId).className+=" item-content-sub-active";
                     }
-                   /* 滚动条移动*/
+                   /* 滚动条向下移动*/
                     moveScroll("down");
                     
         }else if(currentType=="menu" && categoryCurrentId!=totalCount ){
@@ -168,17 +173,33 @@ $(function () {
     }
     //滚动条移动
     function moveScroll(dir) {
+        //获取窗口高度
+        var $winHeight = $(window).height();
+        // 海报内容区
+        var $itemContent = $("#item-content");
+        // 每个海报高度
+        var singleHeight = $(".item-content-sub").height();
+        // 垂直方向海报数量
+        var num = Math.ceil(totalContentCount/2);
+        // 海报内容总高度
+        var $contentHeight = singleHeight * num;
+        // 滚动条当前位置
+        var $top = $itemContent.scrollTop();
+        // 滚动条的总高度
+        var totalScroll = $('#item-content')[0].scrollHeight;
+        // 每次点击滚动条移动的距离
+        var itemHeight = (totalScroll - $winHeight)/(num-1);
         if(dir=="down"){
-            var $itemContent = $("#item-content");
-            /*var $top = $itemContent.scrollTop();
-            alert($top);*/
-            $itemContent[0].scrollTop+=200;
+            // 动态改变滚动条位置
+            $itemContent[0].scrollTop += itemHeight;
+        }else if(dir=="up"){
+            // 动态改变滚动条位置
+            $itemContent[0].scrollTop -= itemHeight;
         }
-        if(dir=="up"){
-            var $itemContent = $("#item-content");
-            /*var $top = $itemContent.scrollTop();
-             alert($top);*/
-            $itemContent[0].scrollTop+=200;
-        }
+    }
+    //按A字母键弹框，测试用
+    function warn_alert() {
+        $("#warn-message").css("display","block");
+        $('#warn-message').delay(3000).hide(0);
     }
 });
