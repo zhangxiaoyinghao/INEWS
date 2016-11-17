@@ -133,12 +133,17 @@ html{background-color:#1e1e1e}
 .content-block{
     display: block !important;
 }
+/*#item-content>ul{
+    position: relative;
+}*/
 #item-content>ul>li{
     width: 49%;
     height: 26%;
     /*background-color: yellow;*/
     padding-top: 2%;
     display: inline-block;
+    float: left;
+   position: relative;
 }
 #item-content>ul>li> .item-content-sub{
     display: inline-block;
