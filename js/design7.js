@@ -144,7 +144,6 @@ $(function () {
                         addClass("item-content-sub",contentCurrentId);
                     }
                    /* 滚动条向下移动*/
-                   // $(".item-area")
                     moveScroll("down",categoryCurrentId,contentCurrentId);
 
         }else if(currentType=="menu" && categoryCurrentId!=totalCount ){
@@ -239,7 +238,6 @@ $(function () {
         var itemContentSub = getid("item-area-"+categoryCurrentId).getElementsByClassName("item-content-sub")[contentCurrentId-1];
         //当前项到父元素顶部的距离
         var topDistance = $(itemContentSub).parent().position().top;
-        //alert(topDistance);
 
         //获取窗口高度
         var $winHeight = $(window).height();
@@ -255,19 +253,12 @@ $(function () {
         var totalScroll = $('#item-content')[0].scrollHeight;
         // 每次点击滚动条移动的距离
         var itemHeight = (totalScroll - $winHeight)/(num-3.4);
-        //console.log("导航ID"+categoryCurrentId+"内容ID"+contentCurrentId+"离顶部距离"+topDistance+"3倍高度"+singleHeight*3);
         if(dir=="down" && topDistance >= singleHeight*3){
             // 动态改变滚动条位置(向下)
-            //$(itemContentSub).parent().position().top = singleHeight*3;
             $itemContent[0].scrollTop += itemHeight;
-            console.log(itemHeight);
-            //$(itemContentSub).parent().position().top += singleHeight+"px";
-           //$(itemContentSub).parent().css("top",0);
-            console.log("导航ID"+categoryCurrentId+"内容ID"+contentCurrentId+"离顶部距离"+$(itemContentSub).parent().position().top+"3倍高度"+singleHeight*3);
         }else if(dir=="up" && topDistance <= 10){
             // 动态改变滚动条位置(向上)
             $itemContent[0].scrollTop -= (itemHeight-1);
-            //$itemContent[0].scrollTop -= (itemHeight);
         }
     }
     // 给第一张海报加定时器
