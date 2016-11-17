@@ -2,7 +2,7 @@ $(function () {
     var contentCurrentId=1;  //当前海报
     var categoryCurrentId=1;    // 当前记录
     var categorySelectedId=1;  // 历史菜单选中记录
-    var filterCurrentId=1;  // 当前栏目筛选项
+    var filterCurrentId=0;  // 当前栏目筛选项
     var totalCount=document.getElementsByClassName("item").length;           //栏目数
     // 每个海报高度
     var singleHeight = $(".item-content-sub").parent().height();
@@ -86,11 +86,22 @@ $(function () {
             contentCurrentId=1;
             removeClass("active","item-content-sub",contentCurrentId);
             addClass("item-content-sub",contentCurrentId);
-        }
-        else if(currentType=="filterItem" && filterCurrentId<totalFilterCount){
-            removeClass("active","filter-sub",filterCurrentId);
-            filterCurrentId=filterCurrentId+1;
-            addClass("filter-sub",filterCurrentId);
+        }else if(currentType=="filter" ){
+            currentType="content";
+            contentCurrentId=1;
+            $(getid("item-filter")).removeClass("active");
+            addClass("item-content-sub",contentCurrentId);
+        } else if(currentType=="filterItem" && filterCurrentId<totalFilterCount){
+
+            if(filterCurrentId == 0){
+                filterCurrentId = 1;
+                addClass("filter-sub",filterCurrentId);
+            }else{
+                removeClass("active","filter-sub",filterCurrentId);
+                filterCurrentId=filterCurrentId+1;
+                addClass("filter-sub",filterCurrentId);
+            }
+
         }
     }
     // 上键
@@ -172,7 +183,7 @@ $(function () {
             alert("type:"+currentType+" 视频类型："+document.getElementById("item-area-"+categoryCurrentId).id+" =>Id:"+contentCurrentId)
         }else if(currentType=="filter"){
             currentType="filterItem";
-            addClass("filter-sub",filterCurrentId);
+            //addClass("filter-sub",filterCurrentId);
             getid("filter-items").className+=" content-block";
         }else if(currentType=="filterItem"){
             alert("type:"+currentType+"=>Id:"+filterCurrentId)
