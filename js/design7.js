@@ -87,10 +87,16 @@ $(function () {
             removeClass("active","item-content-sub",contentCurrentId);
             addClass("item-content-sub",contentCurrentId);
         }else if(currentType=="filter" ){
-            currentType="content";
-            contentCurrentId=1;
-            $(getid("item-filter")).removeClass("active");
-            addClass("item-content-sub",contentCurrentId);
+            if($("#filter-items").hasClass("content-block")){
+                currentType="filterItem";
+                filterCurrentId = 1;
+                addClass("filter-sub",filterCurrentId);
+            }else{
+                currentType="content";
+                contentCurrentId=1;
+                $(getid("item-filter")).removeClass("active");
+                addClass("item-content-sub",contentCurrentId);
+            }
         } else if(currentType=="filterItem" && filterCurrentId<totalFilterCount){
 
             if(filterCurrentId == 0){
@@ -139,9 +145,9 @@ $(function () {
     // 下键
     function fun_down(){
         if(currentType=="filter"){
-            currentType="menu";
-            $(getid("filter-items")).removeClass("content-block");
             $(getid("item-filter")).removeClass("active");
+            filterItemHide();
+            currentType="menu";
             contentCurrentId = 1;
             categoryCurrentId = 1;
             addClass("item-child",categoryCurrentId);
@@ -177,22 +183,19 @@ $(function () {
     }
     // 确认键
     function fun_enter(){
-        if(currentType=="menu"){
-            alert("type:"+currentType+"=>Id:"+categoryCurrentId);
-        }else if(currentType=="content"){
+        if(currentType=="content"){
             alert("type:"+currentType+" 视频类型："+document.getElementById("item-area-"+categoryCurrentId).id+" =>Id:"+contentCurrentId)
         }else if(currentType=="filter"){
             currentType="filterItem";
             //addClass("filter-sub",filterCurrentId);
             getid("filter-items").className+=" content-block";
-        }else if(currentType=="filterItem"){
-            alert("type:"+currentType+"=>Id:"+filterCurrentId)
         }
     }
     // 返回键
     function fun_back() {
-        if(currentType=="filterItem"){
-            $(getid("filter-items")).removeClass("content-block");
+        if(currentType=="filterItem" || currentType=="filter"){
+           // $(getid("filter-items")).removeClass("content-block");
+            filterItemHide();
             currentType="filter"
         }
     }
@@ -305,6 +308,17 @@ $(function () {
     function warn_alert() {
         $("#warn-message").css("display","block");
         $('#warn-message').delay(3000).hide(0);
+    }
+    //筛选内容消失
+    function filterItemHide() {
+        if(filterCurrentId > 0){
+            removeClass("active","filter-sub",filterCurrentId);
+            $(getid("filter-items")).removeClass("content-block");
+            filterCurrentId=0;
+        }else{
+            $(getid("filter-items")).removeClass("content-block");
+        }
+
     }
 
 });
