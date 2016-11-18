@@ -286,9 +286,9 @@ $(function () {
         if(dir=="down" && topDistance >= singleHeight*3){
             // 动态改变滚动条位置(向下)
             $itemContent[0].scrollTop += itemHeight;
-        }else if(dir=="up" && topDistance <= 10){
+        }else if(dir=="up" && topDistance <= 0){
             // 动态改变滚动条位置(向上)
-            $itemContent[0].scrollTop -= (itemHeight-1);
+            $itemContent[0].scrollTop -= (itemHeight);
         }
     }
     // 给第一张海报加定时器
