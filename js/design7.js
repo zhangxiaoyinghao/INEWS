@@ -10,6 +10,7 @@ $(function () {
     var totalContentCount=getid("item-area-"+categoryCurrentId).getElementsByClassName("item-content-sub").length;
     var totalFilterCount=document.getElementsByClassName("filter-sub").length;  //总的栏目筛选项
     var currentType="content";  //初始焦点呈现区左上侧第一张海报
+    var titleLength = $(".scroll_div").width();
     /*
     * currentType="content"  当前焦点在呈现区上
     * currentType="menu"   当前焦点在左侧菜单上
@@ -284,9 +285,12 @@ $(function () {
         scrollAble(scroll_begin,scroll_end,scroll_div,flag,scrollFlag);
     }
     // 视频标题左右滚动
+
     function scrollAble(scroll_begin,scroll_end,scroll_div,flag,scrollFlag) {
-        var speed=30;
-        scroll_end.innerHTML=scroll_begin.innerHTML;
+        //var titleLength = $(".scroll_div").width();
+        var speed=20;
+        scroll_end.innerHTML= "<span style='display: inline-block' class='title-length'></span>"+scroll_begin.innerHTML+"<span style='display: inline-block' class='title-length'></span>";
+        $(".title-length").css("width",titleLength);
         function stopScroll() {
             clearInterval(scrollFlag.MyMar);
         }
@@ -296,8 +300,9 @@ $(function () {
         }else{
             scrollFlag.MyMar=setInterval(Marquee,speed);
             function Marquee(){
-                if(scroll_end.offsetWidth <= scroll_div.scrollLeft){
-                    scroll_div.scrollLeft-=scroll_begin.offsetWidth;
+                var leftWidth = scroll_end.offsetWidth + scroll_begin.offsetWidth - scroll_div.offsetWidth;
+                if(leftWidth <= scroll_div.scrollLeft){
+                    scroll_div.scrollLeft-=(scroll_end.offsetWidth - scroll_div.offsetWidth);
                 } else{
                     scroll_div.scrollLeft++;
                 }
