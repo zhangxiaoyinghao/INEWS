@@ -120,7 +120,7 @@ html{background-color:#1e1e1e}
 /*loadding图片*/
 #item-content .loadding-img{
     position: relative;
-    display: block !important;
+    /*display: block !important;*/
 }
 #item-content .loadding-img img{
     position: absolute;
