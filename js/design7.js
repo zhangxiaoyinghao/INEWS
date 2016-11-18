@@ -1,4 +1,5 @@
 $(function () {
+    isLoading();
     var contentCurrentId=1;  //当前海报
     var categoryCurrentId=1;    // 当前记录
     var categorySelectedId=1;  // 历史菜单选中记录
@@ -10,12 +11,23 @@ $(function () {
     var totalContentCount=getid("item-area-"+categoryCurrentId).getElementsByClassName("item-content-sub").length;
     var totalFilterCount=document.getElementsByClassName("filter-sub").length;  //总的栏目筛选项
     var currentType="content";  //初始焦点呈现区左上侧第一张海报
+    var titleLength = $(".scroll_div").width();
     /*
     * currentType="content"  当前焦点在呈现区上
     * currentType="menu"   当前焦点在左侧菜单上
     * currentType="filter"  当前焦点在左侧筛选按钮上
     * currentType="filterItem"  当前焦点在筛选内容上
     * */
+    /*判断内容是否加载完毕*/
+    function isLoading() {
+        var $itemContentSub = $(".item-content-sub");
+        for (var i = 0; i < $itemContentSub.length; i++) {
+            if($($itemContentSub[i]).find('div.item-msg').length){
+                $($itemContentSub[i]).find('img.loadding-img').css("display","none");
+            }
+
+        }
+    }
     document.onkeydown=jumpPage;
     function getid(id){
         return document.getElementById(id);
@@ -208,12 +220,14 @@ $(function () {
             itemContentSub.className+=" active";
             //视频标题左右滚动
             flag="true";
-            scrollFlag = $(itemContentSub.getElementsByClassName("scroll_begin")[0]);
-            if(itemContentSub.getElementsByClassName("scroll_begin")[0].offsetWidth > itemContentSub.getElementsByClassName("scroll_div")[0].offsetWidth){
-                var scroll_begin = itemContentSub.getElementsByClassName("scroll_begin")[0];
-                var scroll_end = itemContentSub.getElementsByClassName("scroll_end")[0];
-                var scroll_div = itemContentSub.getElementsByClassName("scroll_div")[0];
-                scrollAble(scroll_begin,scroll_end,scroll_div,flag,scrollFlag);
+            if($(itemContentSub).find('div.item-msg').length){
+                scrollFlag = $(itemContentSub.getElementsByClassName("scroll_begin")[0]);
+                if(itemContentSub.getElementsByClassName("scroll_begin")[0].offsetWidth > itemContentSub.getElementsByClassName("scroll_div")[0].offsetWidth){
+                    var scroll_begin = itemContentSub.getElementsByClassName("scroll_begin")[0];
+                    var scroll_end = itemContentSub.getElementsByClassName("scroll_end")[0];
+                    var scroll_div = itemContentSub.getElementsByClassName("scroll_div")[0];
+                    scrollAble(scroll_begin,scroll_end,scroll_div,flag,scrollFlag);
+                }
             }
         }
         document.getElementsByClassName(className)[currentId-1].className+=" active";
@@ -235,13 +249,15 @@ $(function () {
             itemContentSub.className=okClassNames;
             //停止视频标题左右滚动
             flag="false";
-            if(itemContentSub.getElementsByClassName("scroll_begin")[0].offsetWidth > itemContentSub.getElementsByClassName("scroll_div")[0].offsetWidth){
-                var scroll_begin = itemContentSub.getElementsByClassName("scroll_begin")[0];
-                var scroll_end = itemContentSub.getElementsByClassName("scroll_end")[0];
-                var scroll_div = itemContentSub.getElementsByClassName("scroll_div")[0];
-                scrollAble(scroll_begin,scroll_end,scroll_div,flag,scrollFlag);
-
+            if($(itemContentSub).find('div.item-msg').length){
+                if(itemContentSub.getElementsByClassName("scroll_begin")[0].offsetWidth > itemContentSub.getElementsByClassName("scroll_div")[0].offsetWidth){
+                    var scroll_begin = itemContentSub.getElementsByClassName("scroll_begin")[0];
+                    var scroll_end = itemContentSub.getElementsByClassName("scroll_end")[0];
+                    var scroll_div = itemContentSub.getElementsByClassName("scroll_div")[0];
+                    scrollAble(scroll_begin,scroll_end,scroll_div,flag,scrollFlag);
+                }
             }
+
         }
         document.getElementsByClassName(className)[currentId-1].className=okClassNames;
     }
@@ -284,9 +300,12 @@ $(function () {
         scrollAble(scroll_begin,scroll_end,scroll_div,flag,scrollFlag);
     }
     // 视频标题左右滚动
+
     function scrollAble(scroll_begin,scroll_end,scroll_div,flag,scrollFlag) {
-        var speed=30;
-        scroll_end.innerHTML=scroll_begin.innerHTML;
+        //var titleLength = $(".scroll_div").width();
+        var speed=20;
+        scroll_end.innerHTML= "<span style='display: inline-block' class='title-length'></span>"+scroll_begin.innerHTML+"<span style='display: inline-block' class='title-length'></span>";
+        $(".title-length").css("width",titleLength);
         function stopScroll() {
             clearInterval(scrollFlag.MyMar);
         }
@@ -296,8 +315,9 @@ $(function () {
         }else{
             scrollFlag.MyMar=setInterval(Marquee,speed);
             function Marquee(){
-                if(scroll_end.offsetWidth <= scroll_div.scrollLeft){
-                    scroll_div.scrollLeft-=scroll_begin.offsetWidth;
+                var leftWidth = scroll_end.offsetWidth + scroll_begin.offsetWidth - scroll_div.offsetWidth;
+                if(leftWidth <= scroll_div.scrollLeft){
+                    scroll_div.scrollLeft-=(scroll_end.offsetWidth - scroll_div.offsetWidth);
                 } else{
                     scroll_div.scrollLeft++;
                 }
