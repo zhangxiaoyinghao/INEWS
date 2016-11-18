@@ -12,7 +12,8 @@ $(function () {
     var titleLength = $(".scroll_div").width();
     //添加选中样式
     var flag="";
-    var scrollFlag={}1;
+    var scrollFlag={};
+
 
 
     function addClass(className,currentId) {
