@@ -1,4 +1,5 @@
 $(function () {
+    isLoading();
     var contentCurrentId=1;  //当前海报
     var categoryCurrentId=1;    // 当前记录
     var categorySelectedId=1;  // 历史菜单选中记录
@@ -17,6 +18,16 @@ $(function () {
     * currentType="filter"  当前焦点在左侧筛选按钮上
     * currentType="filterItem"  当前焦点在筛选内容上
     * */
+    /*判断内容是否加载完毕*/
+    function isLoading() {
+        var $itemContentSub = $(".item-content-sub");
+        for (var i = 0; i < $itemContentSub.length; i++) {
+            if($($itemContentSub[i]).find('div.item-msg').length){
+                $($itemContentSub[i]).find('img.loadding-img').css("display","none");
+            }
+
+        }
+    }
     document.onkeydown=jumpPage;
     function getid(id){
         return document.getElementById(id);
@@ -209,12 +220,14 @@ $(function () {
             itemContentSub.className+=" active";
             //视频标题左右滚动
             flag="true";
-            scrollFlag = $(itemContentSub.getElementsByClassName("scroll_begin")[0]);
-            if(itemContentSub.getElementsByClassName("scroll_begin")[0].offsetWidth > itemContentSub.getElementsByClassName("scroll_div")[0].offsetWidth){
-                var scroll_begin = itemContentSub.getElementsByClassName("scroll_begin")[0];
-                var scroll_end = itemContentSub.getElementsByClassName("scroll_end")[0];
-                var scroll_div = itemContentSub.getElementsByClassName("scroll_div")[0];
-                scrollAble(scroll_begin,scroll_end,scroll_div,flag,scrollFlag);
+            if($(itemContentSub).find('div.item-msg').length){
+                scrollFlag = $(itemContentSub.getElementsByClassName("scroll_begin")[0]);
+                if(itemContentSub.getElementsByClassName("scroll_begin")[0].offsetWidth > itemContentSub.getElementsByClassName("scroll_div")[0].offsetWidth){
+                    var scroll_begin = itemContentSub.getElementsByClassName("scroll_begin")[0];
+                    var scroll_end = itemContentSub.getElementsByClassName("scroll_end")[0];
+                    var scroll_div = itemContentSub.getElementsByClassName("scroll_div")[0];
+                    scrollAble(scroll_begin,scroll_end,scroll_div,flag,scrollFlag);
+                }
             }
         }
         document.getElementsByClassName(className)[currentId-1].className+=" active";
@@ -236,13 +249,15 @@ $(function () {
             itemContentSub.className=okClassNames;
             //停止视频标题左右滚动
             flag="false";
-            if(itemContentSub.getElementsByClassName("scroll_begin")[0].offsetWidth > itemContentSub.getElementsByClassName("scroll_div")[0].offsetWidth){
-                var scroll_begin = itemContentSub.getElementsByClassName("scroll_begin")[0];
-                var scroll_end = itemContentSub.getElementsByClassName("scroll_end")[0];
-                var scroll_div = itemContentSub.getElementsByClassName("scroll_div")[0];
-                scrollAble(scroll_begin,scroll_end,scroll_div,flag,scrollFlag);
-
+            if($(itemContentSub).find('div.item-msg').length){
+                if(itemContentSub.getElementsByClassName("scroll_begin")[0].offsetWidth > itemContentSub.getElementsByClassName("scroll_div")[0].offsetWidth){
+                    var scroll_begin = itemContentSub.getElementsByClassName("scroll_begin")[0];
+                    var scroll_end = itemContentSub.getElementsByClassName("scroll_end")[0];
+                    var scroll_div = itemContentSub.getElementsByClassName("scroll_div")[0];
+                    scrollAble(scroll_begin,scroll_end,scroll_div,flag,scrollFlag);
+                }
             }
+
         }
         document.getElementsByClassName(className)[currentId-1].className=okClassNames;
     }

@@ -2,7 +2,7 @@ $(function () {
     var contentCurrentId=1;  //当前海报
     var categoryCurrentId=1;    // 当前记录
     var categorySelectedId=1;  // 历史菜单选中记录
-    var filterCurrentId=1;  // 当前栏目筛选项
+    var filterCurrentId=0;  // 当前栏目筛选项
     var totalCount=document.getElementsByClassName("item").length;           //栏目数
     // 每个海报高度
     var singleHeight = $(".item-content-sub").parent().height();
@@ -10,12 +10,13 @@ $(function () {
     var totalContentCount=getid("item-area-"+categoryCurrentId).getElementsByClassName("item-content-sub").length;
     var totalFilterCount=document.getElementsByClassName("filter-sub").length;  //总的栏目筛选项
     var currentType="content";  //初始焦点呈现区左上侧第一张海报
+    var titleLength = $(".scroll_div").width();
     /*
-    * currentType="content"  当前焦点在呈现区上
-    * currentType="menu"   当前焦点在左侧菜单上
-    * currentType="filter"  当前焦点在左侧筛选按钮上
-    * currentType="filterItem"  当前焦点在筛选内容上
-    * */
+     * currentType="content"  当前焦点在呈现区上
+     * currentType="menu"   当前焦点在左侧菜单上
+     * currentType="filter"  当前焦点在左侧筛选按钮上
+     * currentType="filterItem"  当前焦点在筛选内容上
+     * */
     document.onkeydown=jumpPage;
     function getid(id){
         return document.getElementById(id);
@@ -86,11 +87,28 @@ $(function () {
             contentCurrentId=1;
             removeClass("active","item-content-sub",contentCurrentId);
             addClass("item-content-sub",contentCurrentId);
-        }
-        else if(currentType=="filterItem" && filterCurrentId<totalFilterCount){
-            removeClass("active","filter-sub",filterCurrentId);
-            filterCurrentId=filterCurrentId+1;
-            addClass("filter-sub",filterCurrentId);
+        }else if(currentType=="filter" ){
+            if($("#filter-items").hasClass("content-block")){
+                currentType="filterItem";
+                filterCurrentId = 1;
+                addClass("filter-sub",filterCurrentId);
+            }else{
+                currentType="content";
+                contentCurrentId=1;
+                $(getid("item-filter")).removeClass("active");
+                addClass("item-content-sub",contentCurrentId);
+            }
+        } else if(currentType=="filterItem" && filterCurrentId<totalFilterCount){
+
+            if(filterCurrentId == 0){
+                filterCurrentId = 1;
+                addClass("filter-sub",filterCurrentId);
+            }else{
+                removeClass("active","filter-sub",filterCurrentId);
+                filterCurrentId=filterCurrentId+1;
+                addClass("filter-sub",filterCurrentId);
+            }
+
         }
     }
     // 上键
@@ -128,24 +146,23 @@ $(function () {
     // 下键
     function fun_down(){
         if(currentType=="filter"){
-            currentType="menu";
-            $(getid("filter-items")).removeClass("content-block");
             $(getid("item-filter")).removeClass("active");
+            filterItemHide();
+            currentType="menu";
             contentCurrentId = 1;
             categoryCurrentId = 1;
             addClass("item-child",categoryCurrentId);
         }else if( currentType=="content" && contentCurrentId<= (totalContentCount - 2) ){
-                    removeClass("active","item-content-sub",contentCurrentId);
-                    contentCurrentId=contentCurrentId+2;
-                    if(contentCurrentId>totalContentCount){
-                        contentCurrentId=contentCurrentId-2;
-                        addClass("item-content-sub",contentCurrentId);
-                    }else{
-                        addClass("item-content-sub",contentCurrentId);
-                    }
-                   /* 滚动条向下移动*/
-                   // $(".item-area")
-                    moveScroll("down",categoryCurrentId,contentCurrentId);
+            removeClass("active","item-content-sub",contentCurrentId);
+            contentCurrentId=contentCurrentId+2;
+            if(contentCurrentId>totalContentCount){
+                contentCurrentId=contentCurrentId-2;
+                addClass("item-content-sub",contentCurrentId);
+            }else{
+                addClass("item-content-sub",contentCurrentId);
+            }
+            /* 滚动条向下移动*/
+            moveScroll("down",categoryCurrentId,contentCurrentId);
 
         }else if(currentType=="menu" && categoryCurrentId!=totalCount ){
             removeClass("active","item-child",categoryCurrentId);
@@ -167,26 +184,23 @@ $(function () {
     }
     // 确认键
     function fun_enter(){
-        if(currentType=="menu"){
-            alert("type:"+currentType+"=>Id:"+categoryCurrentId);
-        }else if(currentType=="content"){
+        if(currentType=="content"){
             alert("type:"+currentType+" 视频类型："+document.getElementById("item-area-"+categoryCurrentId).id+" =>Id:"+contentCurrentId)
         }else if(currentType=="filter"){
             currentType="filterItem";
-            addClass("filter-sub",filterCurrentId);
+            //addClass("filter-sub",filterCurrentId);
             getid("filter-items").className+=" content-block";
-        }else if(currentType=="filterItem"){
-            alert("type:"+currentType+"=>Id:"+filterCurrentId)
         }
     }
     // 返回键
     function fun_back() {
-        if(currentType=="filterItem"){
-            $(getid("filter-items")).removeClass("content-block");
+        if(currentType=="filterItem" || currentType=="filter"){
+            // $(getid("filter-items")).removeClass("content-block");
+            filterItemHide();
             currentType="filter"
         }
     }
-     //添加选中样式
+    //添加选中样式
     var flag="";
     var scrollFlag={};
     function addClass(className,currentId) {
@@ -239,7 +253,6 @@ $(function () {
         var itemContentSub = getid("item-area-"+categoryCurrentId).getElementsByClassName("item-content-sub")[contentCurrentId-1];
         //当前项到父元素顶部的距离
         var topDistance = $(itemContentSub).parent().position().top;
-        //alert(topDistance);
 
         //获取窗口高度
         var $winHeight = $(window).height();
@@ -254,20 +267,17 @@ $(function () {
         // 滚动条的总高度
         var totalScroll = $('#item-content')[0].scrollHeight;
         // 每次点击滚动条移动的距离
-        var itemHeight = (totalScroll - $winHeight)/(num-3.4);
-        //console.log("导航ID"+categoryCurrentId+"内容ID"+contentCurrentId+"离顶部距离"+topDistance+"3倍高度"+singleHeight*3);
+        var itemHeight = (totalScroll - $winHeight)/(num-3.3);
         if(dir=="down" && topDistance >= singleHeight*3){
             // 动态改变滚动条位置(向下)
-            //$(itemContentSub).parent().position().top = singleHeight*3;
+            console.log("下前"+itemHeight);
             $itemContent[0].scrollTop += itemHeight;
-            console.log(itemHeight);
-            //$(itemContentSub).parent().position().top += singleHeight+"px";
-           //$(itemContentSub).parent().css("top",0);
-            console.log("导航ID"+categoryCurrentId+"内容ID"+contentCurrentId+"离顶部距离"+$(itemContentSub).parent().position().top+"3倍高度"+singleHeight*3);
+            console.log("下后"+itemHeight);
         }else if(dir=="up" && topDistance <= 10){
             // 动态改变滚动条位置(向上)
-            $itemContent[0].scrollTop -= (itemHeight-1);
-            //$itemContent[0].scrollTop -= (itemHeight);
+            console.log("上前"+itemHeight);
+            $itemContent[0].scrollTop -= (itemHeight);
+            console.log("上后"+itemHeight);
         }
     }
     // 给第一张海报加定时器
@@ -279,9 +289,12 @@ $(function () {
         scrollAble(scroll_begin,scroll_end,scroll_div,flag,scrollFlag);
     }
     // 视频标题左右滚动
+
     function scrollAble(scroll_begin,scroll_end,scroll_div,flag,scrollFlag) {
-        var speed=30;
-        scroll_end.innerHTML=scroll_begin.innerHTML;
+        //var titleLength = $(".scroll_div").width();
+        var speed=20;
+        scroll_end.innerHTML= "<span style='display: inline-block' class='title-length'></span>"+scroll_begin.innerHTML+"<span style='display: inline-block' class='title-length'></span>";
+        $(".title-length").css("width",titleLength);
         function stopScroll() {
             clearInterval(scrollFlag.MyMar);
         }
@@ -291,8 +304,9 @@ $(function () {
         }else{
             scrollFlag.MyMar=setInterval(Marquee,speed);
             function Marquee(){
-                if(scroll_end.offsetWidth <= scroll_div.scrollLeft){
-                    scroll_div.scrollLeft-=scroll_begin.offsetWidth;
+                var leftWidth = scroll_end.offsetWidth + scroll_begin.offsetWidth - scroll_div.offsetWidth;
+                if(leftWidth <= scroll_div.scrollLeft){
+                    scroll_div.scrollLeft-=(scroll_end.offsetWidth - scroll_div.offsetWidth);
                 } else{
                     scroll_div.scrollLeft++;
                 }
@@ -303,6 +317,17 @@ $(function () {
     function warn_alert() {
         $("#warn-message").css("display","block");
         $('#warn-message').delay(3000).hide(0);
+    }
+    //筛选内容消失
+    function filterItemHide() {
+        if(filterCurrentId > 0){
+            removeClass("active","filter-sub",filterCurrentId);
+            $(getid("filter-items")).removeClass("content-block");
+            filterCurrentId=0;
+        }else{
+            $(getid("filter-items")).removeClass("content-block");
+        }
+
     }
 
 });
