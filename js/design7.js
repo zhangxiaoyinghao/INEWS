@@ -1,9 +1,7 @@
 $(function () {
-    isLoading();
     var contentCurrentId=1;  //当前海报
-    var categoryCurrentId=1;    // 当前记录
-    var categorySelectedId=1;  // 历史菜单选中记录
-    var filterCurrentId=0;  // 当前栏目筛选项
+    var categoryCurrentId=1;    // 当前记录 菜单栏上下移动时赋值
+    var filterCurrentId=0;  // 当前栏目筛选项 上下左右移动筛选项时赋值
     var totalCount=document.getElementsByClassName("item").length;           //栏目数
     // 每个海报高度
     var singleHeight = $(".item-content-sub").parent().height();
@@ -12,22 +10,45 @@ $(function () {
     var totalFilterCount=document.getElementsByClassName("filter-sub").length;  //总的栏目筛选项
     var currentType="content";  //初始焦点呈现区左上侧第一张海报
     var titleLength = $(".scroll_div").width();
+    //添加选中样式
+    var flag="";
+    var scrollFlag={};
+
+
+    function addClass(className,currentId) {
+        if(currentType=="content"){
+            var itemContentSub = getid("item-area-"+categoryCurrentId).getElementsByClassName("item-content-sub")[currentId-1];
+            itemContentSub.className+=" active";
+            //视频标题左右滚动
+            flag="true";
+            if($(itemContentSub).find('div.item-msg').length){
+                scrollFlag = $(itemContentSub.getElementsByClassName("scroll_begin")[0]);
+                if(itemContentSub.getElementsByClassName("scroll_begin")[0].offsetWidth > itemContentSub.getElementsByClassName("scroll_div")[0].offsetWidth){
+                    var scroll_begin = itemContentSub.getElementsByClassName("scroll_begin")[0];
+                    var scroll_end = itemContentSub.getElementsByClassName("scroll_end")[0];
+                    var scroll_div = itemContentSub.getElementsByClassName("scroll_div")[0];
+                    scrollAble(scroll_begin,scroll_end,scroll_div,flag,scrollFlag);
+                }
+            }
+        }
+        document.getElementsByClassName(className)[currentId-1].className+=" active";
+    }
+    // 给第一张海报加定时器
+    var firstInterval = getid("item-area-1");
+    if(firstInterval.getElementsByClassName("scroll_begin")[0].offsetWidth > firstInterval.getElementsByClassName("scroll_div")[0].offsetWidth){
+        var scroll_begin = firstInterval.getElementsByClassName("scroll_begin")[0];
+        var scroll_end = firstInterval.getElementsByClassName("scroll_end")[0];
+        var scroll_div = firstInterval.getElementsByClassName("scroll_div")[0];
+        scrollAble(scroll_begin,scroll_end,scroll_div,flag,scrollFlag);
+    }
+
     /*
     * currentType="content"  当前焦点在呈现区上
     * currentType="menu"   当前焦点在左侧菜单上
     * currentType="filter"  当前焦点在左侧筛选按钮上
     * currentType="filterItem"  当前焦点在筛选内容上
     * */
-    /*判断内容是否加载完毕*/
-    function isLoading() {
-        var $itemContentSub = $(".item-content-sub");
-        for (var i = 0; i < $itemContentSub.length; i++) {
-            if($($itemContentSub[i]).find('div.item-msg').length){
-                $($itemContentSub[i]).find('img.loadding-img').css("display","none");
-            }
 
-        }
-    }
     document.onkeydown=jumpPage;
     function getid(id){
         return document.getElementById(id);
@@ -72,8 +93,7 @@ $(function () {
         }else if(currentType=="content" && contentCurrentId==1 ){
             removeClass("active","item-content-sub",contentCurrentId);
             currentType="menu";
-            categorySelectedId=categoryCurrentId;
-            addClass("item-child",categorySelectedId);
+            addClass("item-child",categoryCurrentId);
         }else if(currentType=="filterItem" && filterCurrentId!=1){
             removeClass("active","filter-sub",filterCurrentId);
             filterCurrentId=filterCurrentId-1;
@@ -211,27 +231,7 @@ $(function () {
             currentType="filter"
         }
     }
-     //添加选中样式
-    var flag="";
-    var scrollFlag={};
-    function addClass(className,currentId) {
-        if(currentType=="content"){
-            var itemContentSub = getid("item-area-"+categoryCurrentId).getElementsByClassName("item-content-sub")[currentId-1];
-            itemContentSub.className+=" active";
-            //视频标题左右滚动
-            flag="true";
-            if($(itemContentSub).find('div.item-msg').length){
-                scrollFlag = $(itemContentSub.getElementsByClassName("scroll_begin")[0]);
-                if(itemContentSub.getElementsByClassName("scroll_begin")[0].offsetWidth > itemContentSub.getElementsByClassName("scroll_div")[0].offsetWidth){
-                    var scroll_begin = itemContentSub.getElementsByClassName("scroll_begin")[0];
-                    var scroll_end = itemContentSub.getElementsByClassName("scroll_end")[0];
-                    var scroll_div = itemContentSub.getElementsByClassName("scroll_div")[0];
-                    scrollAble(scroll_begin,scroll_end,scroll_div,flag,scrollFlag);
-                }
-            }
-        }
-        document.getElementsByClassName(className)[currentId-1].className+=" active";
-    }
+
     //改变选中项样式
     function removeClass(removeClassName,className,currentId){
         // 获取当前选中项的class值
@@ -291,14 +291,7 @@ $(function () {
             $itemContent[0].scrollTop -= (itemHeight);
         }
     }
-    // 给第一张海报加定时器
-    var firstInterval = getid("item-area-1");
-    if(firstInterval.getElementsByClassName("scroll_begin")[0].offsetWidth > firstInterval.getElementsByClassName("scroll_div")[0].offsetWidth){
-        var scroll_begin = firstInterval.getElementsByClassName("scroll_begin")[0];
-        var scroll_end = firstInterval.getElementsByClassName("scroll_end")[0];
-        var scroll_div = firstInterval.getElementsByClassName("scroll_div")[0];
-        scrollAble(scroll_begin,scroll_end,scroll_div,flag,scrollFlag);
-    }
+
     // 视频标题左右滚动
 
     function scrollAble(scroll_begin,scroll_end,scroll_div,flag,scrollFlag) {
