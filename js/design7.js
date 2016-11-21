@@ -15,6 +15,7 @@ $(function () {
     var scrollFlag={};
 
 
+
     function addClass(className,currentId) {
         if(currentType=="content"){
             var itemContentSub = getid("item-area-"+categoryCurrentId).getElementsByClassName("item-content-sub")[currentId-1];
@@ -288,7 +289,7 @@ $(function () {
             $itemContent[0].scrollTop += itemHeight;
         }else if(dir=="up" && topDistance <= 0){
             // 动态改变滚动条位置(向上)
-            $itemContent[0].scrollTop -= itemHeight;
+            $itemContent[0].scrollTop -= (itemHeight);
         }
     }
 
