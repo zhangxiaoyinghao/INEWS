@@ -269,27 +269,16 @@ window.onload = function () {
         var itemContentSub = getid("item-area-"+categoryCurrentId).getElementsByClassName("item-content-sub")[contentCurrentId-1];
         //当前项到父元素顶部的距离
         var topDistance = itemContentSub.parentNode.getBoundingClientRect().top;
-        //获取窗口高度
-        var winHeight = window.screen.height - 125;
         // 海报内容区
         var itemContent = getid("item-content");
-        // 垂直方向海报数量
-        var num = Math.ceil(totalContentCount/2);
-        // 海报内容总高度
-        var contentHeight = singleHeight * num;
-        // 滚动条当前位置
-        var $top = itemContent.scrollTop;
-        // 滚动条的总高度
-        var totalScroll = getid("item-content").scrollHeight;
         // 每次点击滚动条移动的距离
-        var itemHeight = (totalScroll - winHeight)/(num-3.4);
         if(dir=="down" && topDistance >= singleHeight*2){
             // 动态改变滚动条位置(向下)
-            itemContent.scrollTop += itemHeight;
-            //console.log("当前项到父元素顶部的距离"+topDistance+"向下滚动")
+            itemContent.scrollTop += singleHeight;
+           //console.log("当前项到父元素顶部的距离"+topDistance+"向下滚动"+"contentHeight"+contentHeight+"totalScroll"+totalScroll)
         }else if(dir=="up" && topDistance<0){
             // 动态改变滚动条位置(向上)
-            itemContent.scrollTop -= (itemHeight-1);
+            itemContent.scrollTop -= singleHeight;
             //console.log("当前项到父元素顶部的距离"+topDistance+"向上滚动")
         }
     }
