@@ -275,11 +275,9 @@ window.onload = function () {
         if(dir=="down" && topDistance >= singleHeight*2){
             // 动态改变滚动条位置(向下)
             itemContent.scrollTop += singleHeight;
-           //console.log("当前项到父元素顶部的距离"+topDistance+"向下滚动"+"contentHeight"+contentHeight+"totalScroll"+totalScroll)
         }else if(dir=="up" && topDistance<0){
             // 动态改变滚动条位置(向上)
             itemContent.scrollTop -= singleHeight;
-            //console.log("当前项到父元素顶部的距离"+topDistance+"向上滚动")
         }
     }
 
