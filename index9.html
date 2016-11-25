@@ -1,0 +1,1581 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>新闻头条</title>
+    <!--<link href="css/style.css" type="text/css" rel="Stylesheet" />-->
+    <style>
+        /*样式初始化*/
+        body,html{
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            font-family: "宋体";
+            font-size: 20px;
+            color: #fff;
+        }
+        ul,li{margin:0;padding: 0;}
+        *{text-decoration: none;list-style: none;}
+        .fl{float: left;}
+        .fr{float: right;}
+        p{margin:0;padding:0}
+        #main-content{width:100%;height:100%;background-color:#1e1e1e}
+        html{background-color:#1e1e1e}
+        /*左侧边栏*/
+        #sidebar{
+            width:10%;
+            height:100%;
+            background-color: #262626;
+            position: fixed;
+            padding-top: 5%;
+            font-weight: bold;
+        }
+        #sidebar #item-filter{
+            display: inline-block;
+            height: 8%;
+            position: relative;
+            width: 100%;
+            margin-top: -20%;
+            font-size: 25px;
+        }
+        #sidebar #item-filter>i{
+            display: inline-block;
+            width: 20%;
+            height: 60%;
+            background: url("img/filter.png") no-repeat;
+            background-size: 100% 100%;
+            /*position: absolute;*/
+            left: 15%;
+            top: 20%;
+        }
+        #sidebar #item-filter>span{
+            display: inline-block;
+            /* position: absolute;*/
+            left: 44%;
+            top: 28%;
+        }
+        #sidebar #item-list{
+            height: 72%;
+        }
+        #sidebar #item-list li{
+            height: 6%;
+            /*border-bottom: 1px solid #575757;*/
+            /*width: 80%;
+            margin-left: 10%;*/
+            width: 100%;
+            text-align: center;
+            padding-top: 20%;
+            position: relative;
+        }
+        #sidebar #item-list li::after{
+            content: "";
+            display: inline-block;
+            width:80%;
+            margin-left: 10%;
+            border-bottom: 1px solid #575757;
+            position: absolute;
+            bottom: 2px;
+            left: 0;
+        }
+        #sidebar #item-list li span{
+            display: inline-block;
+            width: 100%;
+            word-spacing: 10px;
+            padding: 10px 0;
+            margin-top: -10px;
+        }
+        /*栏目筛选项*/
+        #filter-items{
+            width: 90%;
+            height: 30%;
+            background-color: #212121;
+            position: fixed;
+            z-index: 998;
+            padding-top: 4%;
+            display: none;
+        }
+        #filter-items>div{
+            display: inline-block;
+        }
+        #filter-items #filter-title{
+            width:10%;
+            height:100%;
+            float: left;
+            /*background-color: rebeccapurple;*/
+            text-align: center;
+        }
+        #filter-items #filter-item{
+            width:90%;
+            height:100%;
+            float: left;
+            /*background-color: gold;*/
+        }
+        #filter-items #filter-item>ul{
+            width:100%;
+            overflow: hidden;
+        }
+        #filter-items #filter-item>ul>li{
+            width: 11.11%;
+            float: left;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+
+        /*节目呈现区*/
+        /*loadding图片*/
+        #item-content .loadding-img{
+            position: relative;
+            /*display: block !important;*/
+        }
+        #item-content .loadding-img img{
+            position: absolute;
+            width: 5%;
+            height: auto;
+            top: 45%;
+            left: 50%;
+            opacity: 0.5 !important;
+            filter: alpha(opacity=50) !important;
+        }
+        #item-content{
+            width:90%;
+            margin-left: 10%;
+            height:100%;
+        }
+        #item-content>ul{
+            width: 100%;
+            height:100%;
+            display:none;
+            /*max-height: 100%;*/
+            /*overflow-y: auto;*/
+        }
+        /*显示内容区*/
+        .content-block{
+            display: block !important;
+        }
+        /*#item-content>ul{
+            position: relative;
+        }*/
+        #item-content>ul>li{
+            width: 49%;
+            height: 26%;
+            /*background-color: yellow;*/
+            padding-top: 2%;
+            display: inline-block;
+            float: left;
+            position: relative;
+        }
+        #item-content>ul>li> .item-content-sub{
+            display: inline-block;
+            height: 100%;
+            width:100%;
+        }
+
+        .active{
+            background-color: #37b235
+        }
+        #item-content>ul>li .item-img{
+            display: inline-block;
+            width:40%;
+            height: 100%;
+            position: relative;
+        }
+        #item-content>ul>li .item-img>img{
+            display: inline-block;
+            width: 90%;
+            height: 90%;
+            margin-left: 3%;
+            margin-top: 3%;
+        }
+        #item-content>ul>li .item-img .video-img{
+            background-image: url("img/bg.png");
+            background-size: 100% 100%;
+        }
+        #item-content>ul>li .item-img .videoM{
+            position: absolute;
+            z-index: 997;
+            width: 40%;
+            height: 58%;
+            left: 25%;
+            top: 16%;
+        }
+        #item-content>ul>li .item-msg{
+            display: inline-block;
+            width: 57%;
+            height: 100%;
+            vertical-align: top;
+        }
+        #item-content>ul>li .item-msg .scroll_div{
+            width: 80%;
+            /*width: 200px;*/
+            white-space: nowrap;
+            overflow:hidden;
+        }
+        #item-content>ul>li .item-msg p{
+            margin-top: 10px;
+        }
+        #item-content>ul>li .item-msg p.item-msg-title{
+            font-size: 25px;
+            width:auto;
+            display: inline-block;
+
+        }
+        /*警示弹框*/
+        #warn-message{
+            width: 20%;
+            height: 20%;
+            background-color: #fff;
+            position: fixed;
+            z-index: 999;
+            top:40%;
+            left:40%;
+            -webkit-border-radius: 20px;
+            -moz-border-radius: 20px;
+            border-radius: 20px;
+            display: none;
+        }
+        #warn-message img{
+            width: 12%;
+            position: absolute;
+            left: calc(42.5%);
+            top: 5%;
+        }
+        #warn-message .messages{
+            width: 100%;
+            height: 67%;
+            position: absolute;
+            bottom: 0;
+            color: #000;
+            text-align: center;
+        }
+        #warn-message .messages p{
+            margin-bottom: 10px;
+        }
+        #warn-message .messages .p1{
+            font-size: 30px;
+        }
+    </style>
+</head>
+<body>
+<div id="main-content">
+    <div id="sidebar">
+        <span id="item-filter" class=""  style="margin-left:10%;" >
+            <i style="width:30%;margin-left:10%"></i><span>筛 选</span>
+        </span>
+        <ul id="item-list">
+            <li class="item"><span id="category-menu-1" class="item-child active category-selected">贵 州</span></li>
+            <li class="item"><span id="category-menu-2" class="item-child">国 际</span></li>
+            <li class="item"><span id="category-menu-3" class="item-child">社 会</span></li>
+            <li class="item"><span id="category-menu-4" class="item-child">法 治</span></li>
+            <li class="item"><span id="category-menu-5" class="item-child">军 事</span></li>
+            <li class="item"><span id="category-menu-6" class="item-child">财 经</span></li>
+            <li class="item"><span id="category-menu-7" class="item-child">体 育</span></li>
+            <li class="item"><span id="category-menu-8" class="item-child">科 技</span></li>
+            <li class="item"><span id="category-menu-9" class="item-child">娱 乐</span></li>
+        </ul>
+    </div>
+    <div id="item-content">
+        <!--栏目筛选项-->
+        <div id="filter-items" class="">
+            <div id="filter-title">栏目筛选项：</div>
+            <div id="filter-item">
+                <ul>
+                    <li class="filter-sub">百姓关注1</li>
+                    <li class="filter-sub">搜狐新闻2</li>
+                    <li class="filter-sub">今日说法3</li>
+                    <li class="filter-sub">百姓关注4</li>
+                    <li class="filter-sub">百姓关注5</li>
+                    <li class="filter-sub">百姓关注6</li>
+                    <li class="filter-sub">百姓关注7</li>
+                    <li class="filter-sub">百姓关注8</li>
+                    <li class="filter-sub">百姓关注9</li>
+                    <li class="filter-sub">百姓关注1</li>
+                    <li class="filter-sub">搜狐新闻2</li>
+                    <li class="filter-sub">今日说法3</li>
+                    <li class="filter-sub">百姓关注4</li>
+                    <li class="filter-sub">百姓关注5</li>
+                    <li class="filter-sub">百姓关注6</li>
+                    <li class="filter-sub">百姓关注7</li>
+                    <li class="filter-sub">百姓关注8</li>
+                    <li class="filter-sub">百姓关注9</li>
+                    <li class="filter-sub">百姓关注1</li>
+                    <li class="filter-sub">搜狐新闻2</li>
+                    <li class="filter-sub">今日说法3</li>
+                    <li class="filter-sub">百姓关注4</li>
+                    <li class="filter-sub">百姓关注5</li>
+                    <li class="filter-sub">百姓关注6</li>
+                    <li class="filter-sub">百姓关注7</li>
+                    <li class="filter-sub">百姓关注8</li>
+                    <li class="filter-sub">百姓关注9</li>
+                    <li class="filter-sub">百姓关注1</li>
+                    <li class="filter-sub">搜狐新闻2</li>
+                    <li class="filter-sub">今日说法3</li>
+                    <li class="filter-sub">百姓关注4</li>
+                    <li class="filter-sub">百姓关注5</li>
+                    <li class="filter-sub">百姓关注6</li>
+                    <li class="filter-sub">百姓关注7</li>
+                    <li class="filter-sub">百姓关注8</li>
+                    <li class="filter-sub">百姓关注9</li>
+                </ul>
+            </div>
+        </div>
+        <!--节目呈现区-->
+        <ul id="item-area-1" class="item-area content-block">
+            <li>
+                <div class="item-content-sub active">
+                    <div class="item-img">
+                        <img src="img/video.jpg" class="video-img">
+                        <img src="img/videoM.png" class="videoM">
+                    </div>
+                    <div class="item-msg">
+                        <p class="item-msg-time">10月22日</p>
+                        <div class="scroll_div">
+                            <p class="item-msg-title scroll_begin">空军运20在珠海升空表演空军运20在珠海升空表演</p>
+                            <p class="item-msg-title scroll_end"></p>
+                        </div>
+                        <p class="item-msg-source">节目来源：<span class="source">百姓关注</span></p>
+                        <p class="item-msg-count">点播量：<span class="count">12340</span></p>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="item-content-sub">
+                    <div class="item-img">
+                        <img src="" class="video-img">
+                        <img src="img/videoM.png" class="videoM">
+                    </div>
+                    <div class="item-msg">
+                        <p class="item-msg-time">10月22日</p>
+                        <div class="scroll_div">
+                            <p class="item-msg-title scroll_begin">空军运20在珠海升空表演空军运20在珠海升空表演</p>
+                            <p class="item-msg-title scroll_end"></p>
+                        </div>
+                        <p class="item-msg-source">节目来源：<span class="source">百姓关注</span></p>
+                        <p class="item-msg-count">点播量：<span class="count">12340</span></p>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="item-content-sub">
+                    <div class="item-img">
+                        <img src="img/video.jpg" class="video-img">
+                        <img src="img/videoM.png" class="videoM">
+                    </div>
+                    <div class="item-msg">
+                        <p class="item-msg-time">10月22日</p>
+                        <div class="scroll_div">
+                            <p class="item-msg-title scroll_begin">空军运20在珠海升空表演空军运20在珠海升空表演</p>
+                            <p class="item-msg-title scroll_end"></p>
+                        </div>
+                        <p class="item-msg-source">节目来源：<span class="source">百姓关注</span></p>
+                        <p class="item-msg-count">点播量：<span class="count">12340</span></p>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="item-content-sub">
+                    <div class="item-img">
+                        <img src="img/video.jpg" class="video-img">
+                        <img src="img/videoM.png" class="videoM">
+                    </div>
+                    <div class="item-msg">
+                        <p class="item-msg-time">10月22日</p>
+                        <div class="scroll_div">
+                            <p class="item-msg-title scroll_begin">空军运20在珠海升空表演</p>
+                            <p class="item-msg-title scroll_end"></p>
+                        </div>
+                        <p class="item-msg-source">节目来源：<span class="source">百姓关注</span></p>
+                        <p class="item-msg-count">点播量：<span class="count">12340</span></p>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="item-content-sub">
+                    <div class="item-img">
+                        <img src="img/video.jpg" class="video-img">
+                        <img src="img/videoM.png" class="videoM">
+                    </div>
+                    <div class="item-msg">
+                        <p class="item-msg-time">10月22日</p>
+                        <div class="scroll_div">
+                            <p class="item-msg-title scroll_begin">空军运20在珠海升空表演</p>
+                            <p class="item-msg-title scroll_end"></p>
+                        </div>
+                        <p class="item-msg-source">节目来源：<span class="source">百姓关注</span></p>
+                        <p class="item-msg-count">点播量：<span class="count">12340</span></p>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="item-content-sub">
+                    <div class="item-img">
+                        <img src="img/video.jpg" class="video-img">
+                        <img src="img/videoM.png" class="videoM">
+                    </div>
+                    <div class="item-msg">
+                        <p class="item-msg-time">10月22日</p>
+                        <div class="scroll_div">
+                            <p class="item-msg-title scroll_begin">空军运20在珠海升空表演</p>
+                            <p class="item-msg-title scroll_end"></p>
+                        </div>
+                        <p class="item-msg-source">节目来源：<span class="source">百姓关注</span></p>
+                        <p class="item-msg-count">点播量：<span class="count">12340</span></p>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="item-content-sub">
+                    <div class="item-img">
+                        <img src="img/video.jpg" class="video-img">
+                        <img src="img/videoM.png" class="videoM">
+                    </div>
+                    <div class="item-msg">
+                        <p class="item-msg-time">10月22日</p>
+                        <div class="scroll_div">
+                            <p class="item-msg-title scroll_begin">空军运20在珠海升空表演</p>
+                            <p class="item-msg-title scroll_end"></p>
+                        </div>
+                        <p class="item-msg-source">节目来源：<span class="source">百姓关注</span></p>
+                        <p class="item-msg-count">点播量：<span class="count">12340</span></p>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="item-content-sub">
+                    <div class="item-img">
+                        <img src="img/video.jpg" class="video-img">
+                        <img src="img/videoM.png" class="videoM">
+                    </div>
+                    <div class="item-msg">
+                        <p class="item-msg-time">10月22日</p>
+                        <div class="scroll_div">
+                            <p class="item-msg-title scroll_begin">空军运20在珠海升空表演</p>
+                            <p class="item-msg-title scroll_end"></p>
+                        </div>
+                        <p class="item-msg-source">节目来源：<span class="source">百姓关注</span></p>
+                        <p class="item-msg-count">点播量：<span class="count">12340</span></p>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="item-content-sub">
+                    <div class="item-img">
+                        <img src="img/video.jpg" class="video-img">
+                        <img src="img/videoM.png" class="videoM">
+                    </div>
+                    <div class="item-msg">
+                        <p class="item-msg-time">10月22日</p>
+                        <div class="scroll_div">
+                            <p class="item-msg-title scroll_begin">空军运20在珠海升空表演</p>
+                            <p class="item-msg-title scroll_end"></p>
+                        </div>
+                        <p class="item-msg-source">节目来源：<span class="source">百姓关注</span></p>
+                        <p class="item-msg-count">点播量：<span class="count">12340</span></p>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="item-content-sub">
+                    <div class="item-img">
+                        <img src="img/video.jpg" class="video-img">
+                        <img src="img/videoM.png" class="videoM">
+                    </div>
+                    <div class="item-msg">
+                        <p class="item-msg-time">10月22日</p>
+                        <div class="scroll_div">
+                            <p class="item-msg-title scroll_begin">空军运20在珠海升空表演</p>
+                            <p class="item-msg-title scroll_end"></p>
+                        </div>
+                        <p class="item-msg-source">节目来源：<span class="source">百姓关注</span></p>
+                        <p class="item-msg-count">点播量：<span class="count">12340</span></p>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="item-content-sub">
+                    <div class="item-img">
+                        <img src="img/video.jpg" class="video-img">
+                        <img src="img/videoM.png" class="videoM">
+                    </div>
+                    <div class="item-msg">
+                        <p class="item-msg-time">10月22日</p>
+                        <div class="scroll_div">
+                            <p class="item-msg-title scroll_begin">空军运20在珠海升空表演</p>
+                            <p class="item-msg-title scroll_end"></p>
+                        </div>
+                        <p class="item-msg-source">节目来源：<span class="source">百姓关注</span></p>
+                        <p class="item-msg-count">点播量：<span class="count">12340</span></p>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="item-content-sub">
+                    <div class="item-img">
+                        <img src="img/video.jpg" class="video-img">
+                        <img src="img/videoM.png" class="videoM">
+                    </div>
+                    <div class="item-msg">
+                        <p class="item-msg-time">10月22日</p>
+                        <div class="scroll_div">
+                            <p class="item-msg-title scroll_begin">空军运20在珠海升空表演</p>
+                            <p class="item-msg-title scroll_end"></p>
+                        </div>
+                        <p class="item-msg-source">节目来源：<span class="source">百姓关注</span></p>
+                        <p class="item-msg-count">点播量：<span class="count">12340</span></p>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="item-content-sub">
+                    <div class="item-img">
+                        <img src="" class="video-img">
+                        <img src="img/videoM.png" class="videoM">
+                    </div>
+                    <div class="item-msg">
+                        <p class="item-msg-time">10月22日</p>
+                        <div class="scroll_div">
+                            <p class="item-msg-title scroll_begin">空军运20在珠海升空表演空军运20在珠海升空表演</p>
+                            <p class="item-msg-title scroll_end"></p>
+                        </div>
+                        <p class="item-msg-source">节目来源：<span class="source">百姓关注</span></p>
+                        <p class="item-msg-count">点播量：<span class="count">12340</span></p>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="item-content-sub">
+                    <div class="item-img">
+                        <img src="img/video.jpg" class="video-img">
+                        <img src="img/videoM.png" class="videoM">
+                    </div>
+                    <div class="item-msg">
+                        <p class="item-msg-time">10月22日</p>
+                        <div class="scroll_div">
+                            <p class="item-msg-title scroll_begin">空军运20在珠海升空表演空军运20在珠海升空表演</p>
+                            <p class="item-msg-title scroll_end"></p>
+                        </div>
+                        <p class="item-msg-source">节目来源：<span class="source">百姓关注</span></p>
+                        <p class="item-msg-count">点播量：<span class="count">12340</span></p>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="item-content-sub">
+                    <div class="item-img">
+                        <img src="img/video.jpg" class="video-img">
+                        <img src="img/videoM.png" class="videoM">
+                    </div>
+                    <div class="item-msg">
+                        <p class="item-msg-time">10月22日</p>
+                        <div class="scroll_div">
+                            <p class="item-msg-title scroll_begin">空军运20在珠海升空表演</p>
+                            <p class="item-msg-title scroll_end"></p>
+                        </div>
+                        <p class="item-msg-source">节目来源：<span class="source">百姓关注</span></p>
+                        <p class="item-msg-count">点播量：<span class="count">12340</span></p>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="item-content-sub">
+                    <div class="item-img">
+                        <img src="img/video.jpg" class="video-img">
+                        <img src="img/videoM.png" class="videoM">
+                    </div>
+                    <div class="item-msg">
+                        <p class="item-msg-time">10月22日</p>
+                        <div class="scroll_div">
+                            <p class="item-msg-title scroll_begin">空军运20在珠海升空表演</p>
+                            <p class="item-msg-title scroll_end"></p>
+                        </div>
+                        <p class="item-msg-source">节目来源：<span class="source">百姓关注</span></p>
+                        <p class="item-msg-count">点播量：<span class="count">12340</span></p>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="item-content-sub">
+                    <div class="item-img">
+                        <img src="img/video.jpg" class="video-img">
+                        <img src="img/videoM.png" class="videoM">
+                    </div>
+                    <div class="item-msg">
+                        <p class="item-msg-time">10月22日</p>
+                        <div class="scroll_div">
+                            <p class="item-msg-title scroll_begin">空军运20在珠海升空表演</p>
+                            <p class="item-msg-title scroll_end"></p>
+                        </div>
+                        <p class="item-msg-source">节目来源：<span class="source">百姓关注</span></p>
+                        <p class="item-msg-count">点播量：<span class="count">12340</span></p>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="item-content-sub">
+                    <div class="item-img">
+                        <img src="img/video.jpg" class="video-img">
+                        <img src="img/videoM.png" class="videoM">
+                    </div>
+                    <div class="item-msg">
+                        <p class="item-msg-time">10月22日</p>
+                        <div class="scroll_div">
+                            <p class="item-msg-title scroll_begin">空军运20在珠海升空表演</p>
+                            <p class="item-msg-title scroll_end"></p>
+                        </div>
+                        <p class="item-msg-source">节目来源：<span class="source">百姓关注</span></p>
+                        <p class="item-msg-count">点播量：<span class="count">12340</span></p>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="item-content-sub">
+                    <div class="item-img">
+                        <img src="img/video.jpg" class="video-img">
+                        <img src="img/videoM.png" class="videoM">
+                    </div>
+                    <div class="item-msg">
+                        <p class="item-msg-time">10月22日</p>
+                        <div class="scroll_div">
+                            <p class="item-msg-title scroll_begin">空军运20在珠海升空表演</p>
+                            <p class="item-msg-title scroll_end"></p>
+                        </div>
+                        <p class="item-msg-source">节目来源：<span class="source">百姓关注</span></p>
+                        <p class="item-msg-count">点播量：<span class="count">12340</span></p>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="item-content-sub">
+                    <div class="item-img">
+                        <img src="img/video.jpg" class="video-img">
+                        <img src="img/videoM.png" class="videoM">
+                    </div>
+                    <div class="item-msg">
+                        <p class="item-msg-time">10月22日</p>
+                        <div class="scroll_div">
+                            <p class="item-msg-title scroll_begin">空军运20在珠海升空表演</p>
+                            <p class="item-msg-title scroll_end"></p>
+                        </div>
+                        <p class="item-msg-source">节目来源：<span class="source">百姓关注</span></p>
+                        <p class="item-msg-count">点播量：<span class="count">12340</span></p>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="item-content-sub">
+                    <div class="item-img">
+                        <img src="img/video.jpg" class="video-img">
+                        <img src="img/videoM.png" class="videoM">
+                    </div>
+                    <div class="item-msg">
+                        <p class="item-msg-time">10月22日</p>
+                        <div class="scroll_div">
+                            <p class="item-msg-title scroll_begin">空军运20在珠海升空表演</p>
+                            <p class="item-msg-title scroll_end"></p>
+                        </div>
+                        <p class="item-msg-source">节目来源：<span class="source">百姓关注</span></p>
+                        <p class="item-msg-count">点播量：<span class="count">12340</span></p>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="item-content-sub">
+                    <div class="item-img">
+                        <img src="img/video.jpg" class="video-img">
+                        <img src="img/videoM.png" class="videoM">
+                    </div>
+                    <div class="item-msg">
+                        <p class="item-msg-time">10月22日</p>
+                        <div class="scroll_div">
+                            <p class="item-msg-title scroll_begin">空军运20在珠海升空表演</p>
+                            <p class="item-msg-title scroll_end"></p>
+                        </div>
+                        <p class="item-msg-source">节目来源：<span class="source">百姓关注</span></p>
+                        <p class="item-msg-count">点播量：<span class="count">12340</span></p>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="item-content-sub">
+                    <div class="item-img">
+                        <img src="img/video.jpg" class="video-img">
+                        <img src="img/videoM.png" class="videoM">
+                    </div>
+                    <div class="item-msg">
+                        <p class="item-msg-time">10月22日</p>
+                        <div class="scroll_div">
+                            <p class="item-msg-title scroll_begin">空军运20在珠海升空表演</p>
+                            <p class="item-msg-title scroll_end"></p>
+                        </div>
+                        <p class="item-msg-source">节目来源：<span class="source">百姓关注</span></p>
+                        <p class="item-msg-count">点播量：<span class="count">12340</span></p>
+                    </div>
+                </div>
+            </li>
+        </ul>
+        <ul id="item-area-2" class="item-area">
+            <li>
+                <div class="item-content-sub">
+                    <div class="item-img">
+                        <img src="img/a1.jpg" class="video-img">
+                        <img src="img/videoM.png" class="videoM">
+                    </div>
+                    <div class="item-msg">
+                        <p class="item-msg-time">10月22日</p>
+                        <div class="scroll_div">
+                            <p class="item-msg-title scroll_begin">空军运20在珠海升空表演循环循环循环循环循环循环循环循环</p>
+                            <p class="item-msg-title scroll_end"></p>
+                        </div>
+                        <p class="item-msg-source">节目来源：<span class="source">百姓关注</span></p>
+                        <p class="item-msg-count">点播量：<span class="count">12340</span></p>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="item-content-sub">
+                    <div class="item-img">
+                        <img src="img/a1.jpg" class="video-img">
+                        <img src="img/videoM.png" class="videoM">
+                    </div>
+                    <div class="item-msg">
+                        <p class="item-msg-time">10月22日</p>
+                        <div class="scroll_div">
+                            <p class="item-msg-title scroll_begin">空军运20在珠海升空表演循环循环循环循环循环循环循环循环</p>
+                            <p class="item-msg-title scroll_end"></p>
+                        </div>
+                        <p class="item-msg-source">节目来源：<span class="source">百姓关注</span></p>
+                        <p class="item-msg-count">点播量：<span class="count">12340</span></p>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="item-content-sub">
+                    <div class="item-img">
+                        <img src="img/a1.jpg" class="video-img">
+                        <img src="img/videoM.png" class="videoM">
+                    </div>
+                    <div class="item-msg">
+                        <p class="item-msg-time">10月22日</p>
+                        <div class="scroll_div">
+                            <p class="item-msg-title scroll_begin">空军运20在珠海升空表演</p>
+                            <p class="item-msg-title scroll_end"></p>
+                        </div>
+                        <p class="item-msg-source">节目来源：<span class="source">百姓关注</span></p>
+                        <p class="item-msg-count">点播量：<span class="count">12340</span></p>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="item-content-sub">
+                    <div class="item-img">
+                        <img src="img/a1.jpg" class="video-img">
+                        <img src="img/videoM.png" class="videoM">
+                    </div>
+                    <div class="item-msg">
+                        <p class="item-msg-time">10月22日</p>
+                        <div class="scroll_div">
+                            <p class="item-msg-title scroll_begin">空军运20在珠海升空表演</p>
+                            <p class="item-msg-title scroll_end"></p>
+                        </div>
+                        <p class="item-msg-source">节目来源：<span class="source">百姓关注</span></p>
+                        <p class="item-msg-count">点播量：<span class="count">12340</span></p>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="item-content-sub">
+                    <div class="item-img">
+                        <img src="img/a1.jpg" class="video-img">
+                        <img src="img/videoM.png" class="videoM">
+                    </div>
+                    <div class="item-msg">
+                        <p class="item-msg-time">10月22日</p>
+                        <div class="scroll_div">
+                            <p class="item-msg-title scroll_begin">空军运20在珠海升空表演</p>
+                            <p class="item-msg-title scroll_end"></p>
+                        </div>
+                        <p class="item-msg-source">节目来源：<span class="source">百姓关注</span></p>
+                        <p class="item-msg-count">点播量：<span class="count">12340</span></p>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="item-content-sub">
+                    <div class="item-img">
+                        <img src="img/a1.jpg" class="video-img">
+                        <img src="img/videoM.png" class="videoM">
+                    </div>
+                    <div class="item-msg">
+                        <p class="item-msg-time">10月22日</p>
+                        <div class="scroll_div">
+                            <p class="item-msg-title scroll_begin">空军运20在珠海升空表演</p>
+                            <p class="item-msg-title scroll_end"></p>
+                        </div>
+                        <p class="item-msg-source">节目来源：<span class="source">百姓关注</span></p>
+                        <p class="item-msg-count">点播量：<span class="count">12340</span></p>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="item-content-sub">
+                    <div class="item-img">
+                        <img src="img/a1.jpg" class="video-img">
+                        <img src="img/videoM.png" class="videoM">
+                    </div>
+                    <div class="item-msg">
+                        <p class="item-msg-time">10月22日</p>
+                        <div class="scroll_div">
+                            <p class="item-msg-title scroll_begin">空军运20在珠海升空表演</p>
+                            <p class="item-msg-title scroll_end"></p>
+                        </div>
+                        <p class="item-msg-source">节目来源：<span class="source">百姓关注</span></p>
+                        <p class="item-msg-count">点播量：<span class="count">12340</span></p>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="item-content-sub">
+                    <div class="item-img">
+                        <img src="img/a1.jpg" class="video-img">
+                        <img src="img/videoM.png" class="videoM">
+                    </div>
+                    <div class="item-msg">
+                        <p class="item-msg-time">10月22日</p>
+                        <div class="scroll_div">
+                            <p class="item-msg-title scroll_begin">空军运20在珠海升空表演</p>
+                            <p class="item-msg-title scroll_end"></p>
+                        </div>
+                        <p class="item-msg-source">节目来源：<span class="source">百姓关注</span></p>
+                        <p class="item-msg-count">点播量：<span class="count">12340</span></p>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="item-content-sub">
+                    <div class="item-img">
+                        <img src="img/a1.jpg" class="video-img">
+                        <img src="img/videoM.png" class="videoM">
+                    </div>
+                    <div class="item-msg">
+                        <p class="item-msg-time">10月22日</p>
+                        <div class="scroll_div">
+                            <p class="item-msg-title scroll_begin">空军运20在珠海升空表演</p>
+                            <p class="item-msg-title scroll_end"></p>
+                        </div>
+                        <p class="item-msg-source">节目来源：<span class="source">百姓关注</span></p>
+                        <p class="item-msg-count">点播量：<span class="count">12340</span></p>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="item-content-sub">
+                    <div class="item-img">
+                        <img src="img/a1.jpg" class="video-img">
+                        <img src="img/videoM.png" class="videoM">
+                    </div>
+                    <div class="item-msg">
+                        <p class="item-msg-time">10月22日</p>
+                        <div class="scroll_div">
+                            <p class="item-msg-title scroll_begin">空军运20在珠海升空表演</p>
+                            <p class="item-msg-title scroll_end"></p>
+                        </div>
+                        <p class="item-msg-source">节目来源：<span class="source">百姓关注</span></p>
+                        <p class="item-msg-count">点播量：<span class="count">12340</span></p>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="item-content-sub">
+                    <div class="item-img">
+                        <img src="img/a1.jpg" class="video-img">
+                        <img src="img/videoM.png" class="videoM">
+                    </div>
+                    <div class="item-msg">
+                        <p class="item-msg-time">10月22日</p>
+                        <div class="scroll_div">
+                            <p class="item-msg-title scroll_begin">空军运20在珠海升空表演</p>
+                            <p class="item-msg-title scroll_end"></p>
+                        </div>
+                        <p class="item-msg-source">节目来源：<span class="source">百姓关注</span></p>
+                        <p class="item-msg-count">点播量：<span class="count">12340</span></p>
+                    </div>
+                </div>
+            </li>
+        </ul>
+        <ul id="item-area-3" class="item-area">
+            <li>
+                <div class="item-content-sub">
+                    <div class="item-img">
+                        <img src="img/a2.jpg" class="video-img">
+                        <img src="img/videoM.png" class="videoM">
+                    </div>
+                    <div class="item-msg">
+                        <p class="item-msg-time">10月22日</p>
+                        <div class="scroll_div">
+                            <p class="item-msg-title scroll_begin">空军运20在珠海升空表演循环循环循环循环循环循环循环循环</p>
+                            <p class="item-msg-title scroll_end"></p>
+                        </div>
+                        <p class="item-msg-source">节目来源：<span class="source">百姓关注</span></p>
+                        <p class="item-msg-count">点播量：<span class="count">12340</span></p>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="item-content-sub">
+                    <div class="item-img">
+                        <img src="img/a2.jpg" class="video-img">
+                        <img src="img/videoM.png" class="videoM">
+                    </div>
+                    <div class="item-msg">
+                        <p class="item-msg-time">10月22日</p>
+                        <div class="scroll_div">
+                            <p class="item-msg-title scroll_begin">空军运20在珠海升空表演</p>
+                            <p class="item-msg-title scroll_end"></p>
+                        </div>
+                        <p class="item-msg-source">节目来源：<span class="source">百姓关注</span></p>
+                        <p class="item-msg-count">点播量：<span class="count">12340</span></p>
+                    </div>
+                </div>
+            </li>
+        </ul>
+        <ul id="item-area-4" class="item-area">
+            <li>
+                <div class="item-content-sub">
+                    <div class="item-img">
+                        <img src="img/a3.jpg" class="video-img">
+                        <img src="img/videoM.png" class="videoM">
+                    </div>
+                    <div class="item-msg">
+                        <p class="item-msg-time">10月22日</p>
+                        <div class="scroll_div">
+                            <p class="item-msg-title scroll_begin">空军运20在珠海升空表演循环循环循环循环循环循环循环循环</p>
+                            <p class="item-msg-title scroll_end"></p>
+                        </div>
+                        <p class="item-msg-source">节目来源：<span class="source">百姓关注</span></p>
+                        <p class="item-msg-count">点播量：<span class="count">12340</span></p>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="item-content-sub">
+                    <div class="item-img">
+                        <img src="img/a3.jpg" class="video-img">
+                        <img src="img/videoM.png" class="videoM">
+                    </div>
+                    <div class="item-msg">
+                        <p class="item-msg-time">10月22日</p>
+                        <div class="scroll_div">
+                            <p class="item-msg-title scroll_begin">空军运20在珠海升空表演</p>
+                            <p class="item-msg-title scroll_end"></p>
+                        </div>
+                        <p class="item-msg-source">节目来源：<span class="source">百姓关注</span></p>
+                        <p class="item-msg-count">点播量：<span class="count">12340</span></p>
+                    </div>
+                </div>
+            </li>
+        </ul>
+        <ul id="item-area-5" class="item-area">
+            <li>
+                <div class="item-content-sub">
+                    <div class="item-img">
+                        <img src="img/a4.jpg" class="video-img">
+                        <img src="img/videoM.png" class="videoM">
+                    </div>
+                    <div class="item-msg">
+                        <p class="item-msg-time">10月22日</p>
+                        <div class="scroll_div">
+                            <p class="item-msg-title scroll_begin">空军运20在珠海升空表演循环循环循环循环循环循环循环循环</p>
+                            <p class="item-msg-title scroll_end"></p>
+                        </div>
+                        <p class="item-msg-source">节目来源：<span class="source">百姓关注</span></p>
+                        <p class="item-msg-count">点播量：<span class="count">12340</span></p>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="item-content-sub">
+                    <div class="item-img">
+                        <img src="img/a4.jpg" class="video-img">
+                        <img src="img/videoM.png" class="videoM">
+                    </div>
+                    <div class="item-msg">
+                        <p class="item-msg-time">10月22日</p>
+                        <div class="scroll_div">
+                            <p class="item-msg-title scroll_begin">空军运20在珠海升空表演</p>
+                            <p class="item-msg-title scroll_end"></p>
+                        </div>
+                        <p class="item-msg-source">节目来源：<span class="source">百姓关注</span></p>
+                        <p class="item-msg-count">点播量：<span class="count">12340</span></p>
+                    </div>
+                </div>
+            </li>
+        </ul>
+        <ul id="item-area-6" class="item-area">
+            <li>
+                <div class="item-content-sub">
+                    <div class="item-img">
+                        <img src="img/a5.jpg" class="video-img">
+                        <img src="img/videoM.png" class="videoM">
+                    </div>
+                    <div class="item-msg">
+                        <p class="item-msg-time">10月22日</p>
+                        <div class="scroll_div">
+                            <p class="item-msg-title scroll_begin">空军运20在珠海升空表演循环循环循环循环循环循环循环循环</p>
+                            <p class="item-msg-title scroll_end"></p>
+                        </div>
+                        <p class="item-msg-source">节目来源：<span class="source">百姓关注</span></p>
+                        <p class="item-msg-count">点播量：<span class="count">12340</span></p>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="item-content-sub">
+                    <div class="item-img">
+                        <img src="img/a5.jpg" class="video-img">
+                        <img src="img/videoM.png" class="videoM">
+                    </div>
+                    <div class="item-msg">
+                        <p class="item-msg-time">10月22日</p>
+                        <div class="scroll_div">
+                            <p class="item-msg-title scroll_begin">空军运20在珠海升空表演</p>
+                            <p class="item-msg-title scroll_end"></p>
+                        </div>
+                        <p class="item-msg-source">节目来源：<span class="source">百姓关注</span></p>
+                        <p class="item-msg-count">点播量：<span class="count">12340</span></p>
+                    </div>
+                </div>
+            </li>
+        </ul>
+        <ul id="item-area-7" class="item-area">
+            <li>
+                <div class="item-content-sub">
+                    <div class="item-img">
+                        <img src="img/a6.jpg" class="video-img">
+                        <img src="img/videoM.png" class="videoM">
+                    </div>
+                    <div class="item-msg">
+                        <p class="item-msg-time">10月22日</p>
+                        <div class="scroll_div">
+                            <p class="item-msg-title scroll_begin">空军运20在珠海升空表演循环循环循环循环循环循环循环循环</p>
+                            <p class="item-msg-title scroll_end"></p>
+                        </div>
+                        <p class="item-msg-source">节目来源：<span class="source">百姓关注</span></p>
+                        <p class="item-msg-count">点播量：<span class="count">12340</span></p>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="item-content-sub">
+                    <div class="item-img">
+                        <img src="img/a6.jpg" class="video-img">
+                        <img src="img/videoM.png" class="videoM">
+                    </div>
+                    <div class="item-msg">
+                        <p class="item-msg-time">10月22日</p>
+                        <div class="scroll_div">
+                            <p class="item-msg-title scroll_begin">空军运20在珠海升空表演</p>
+                            <p class="item-msg-title scroll_end"></p>
+                        </div>
+                        <p class="item-msg-source">节目来源：<span class="source">百姓关注</span></p>
+                        <p class="item-msg-count">点播量：<span class="count">12340</span></p>
+                    </div>
+                </div>
+            </li>
+        </ul>
+        <ul id="item-area-8" class="item-area">
+            <li>
+                <div class="item-content-sub">
+                    <div class="item-img">
+                        <img src="img/a7.jpg" class="video-img">
+                        <img src="img/videoM.png" class="videoM">
+                    </div>
+                    <div class="item-msg">
+                        <p class="item-msg-time">10月22日</p>
+                        <div class="scroll_div">
+                            <p class="item-msg-title scroll_begin">空军运20在珠海升空表演循环循环循环循环循环循环循环循环</p>
+                            <p class="item-msg-title scroll_end"></p>
+                        </div>
+                        <p class="item-msg-source">节目来源：<span class="source">百姓关注</span></p>
+                        <p class="item-msg-count">点播量：<span class="count">12340</span></p>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="item-content-sub">
+                    <div class="item-img">
+                        <img src="img/a7.jpg" class="video-img">
+                        <img src="img/videoM.png" class="videoM">
+                    </div>
+                    <div class="item-msg">
+                        <p class="item-msg-time">10月22日</p>
+                        <div class="scroll_div">
+                            <p class="item-msg-title scroll_begin">空军运20在珠海升空表演</p>
+                            <p class="item-msg-title scroll_end"></p>
+                        </div>
+                        <p class="item-msg-source">节目来源：<span class="source">百姓关注</span></p>
+                        <p class="item-msg-count">点播量：<span class="count">12340</span></p>
+                    </div>
+                </div>
+            </li>
+        </ul>
+        <ul id="item-area-9" class="item-area">
+            <li>
+                <div class="item-content-sub">
+                    <div class="item-img">
+                        <img src="img/a8.jpg" class="video-img">
+                        <img src="img/videoM.png" class="videoM">
+                    </div>
+                    <div class="item-msg">
+                        <p class="item-msg-time">10月22日</p>
+                        <div class="scroll_div">
+                            <p class="item-msg-title scroll_begin">空军运20在珠海升空表演循环循环循环循环循环循环循环循环</p>
+                            <p class="item-msg-title scroll_end"></p>
+                        </div>
+                        <p class="item-msg-source">节目来源：<span class="source">百姓关注</span></p>
+                        <p class="item-msg-count">点播量：<span class="count">12340</span></p>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="item-content-sub">
+                    <div class="item-img">
+                        <img src="img/a8.jpg" class="video-img">
+                        <img src="img/videoM.png" class="videoM">
+                    </div>
+                    <div class="item-msg">
+                        <p class="item-msg-time">10月22日</p>
+                        <div class="scroll_div">
+                            <p class="item-msg-title scroll_begin">空军运20在珠海升空表演</p>
+                            <p class="item-msg-title scroll_end"></p>
+                        </div>
+                        <p class="item-msg-source">节目来源：<span class="source">百姓关注</span></p>
+                        <p class="item-msg-count">点播量：<span class="count">12340</span></p>
+                    </div>
+                </div>
+            </li>
+        </ul>
+        <ul id="item-area-10" class="item-area loadding-img">
+            <img src="img/loadding.gif">
+        </ul>
+    </div>
+</div>
+<!--警示弹框-->
+<div id="warn-message">
+    <img src="img/warn.jpg">
+    <div class="messages">
+        <p class="p1">操作提示</p>
+        <p class="p2">不知道什么错误。。。。。</p>
+        <p class="p3">3s后自动消失</p>
+    </div>
+
+</div>
+</body>
+<script type="text/javascript">
+    window.onload = function () {
+        var maxHeight = window.screen.height + "px";
+        document.getElementById("item-content").style.cssText="max-height:"+maxHeight+";overflow-y:auto";
+        var getElementsByClassName = function (className, tag, elm){
+            if (document.getElementsByClassName) {
+                getElementsByClassName = function (className, tag, elm) {
+                    elm = elm || document;
+                    var elements = elm.getElementsByClassName(className),
+                            nodeName = (tag)? new RegExp("\\b" + tag + "\\b", "i") : null,
+                            returnElements = [],
+                            current;
+                    for(var i=0, il=elements.length; i<il; i+=1){
+                        current = elements[i];
+                        if(!nodeName || nodeName.test(current.nodeName)) {
+                            returnElements.push(current);
+                        }
+                    }
+                    return returnElements;
+                };
+            }
+            else if (document.evaluate) {
+                getElementsByClassName = function (className, tag, elm) {
+                    tag = tag || "*";
+                    elm = elm || document;
+                    var classes = className.split(" "),
+                            classesToCheck = "",
+                            xhtmlNamespace = "http://www.w3.org/1999/xhtml",
+                            namespaceResolver = (document.documentElement.namespaceURI === xhtmlNamespace)? xhtmlNamespace : null,
+                            returnElements = [],
+                            elements,
+                            node;
+                    for(var j=0, jl=classes.length; j<jl; j+=1){
+                        classesToCheck += "[contains(concat(' ', @class, ' '), ' " + classes[j] + " ')]";
+                    }
+                    try	{
+                        elements = document.evaluate(".//" + tag + classesToCheck, elm, namespaceResolver, 0, null);
+                    }
+                    catch (e) {
+                        elements = document.evaluate(".//" + tag + classesToCheck, elm, null, 0, null);
+                    }
+                    while ((node = elements.iterateNext())) {
+                        returnElements.push(node);
+                    }
+                    return returnElements;
+                };
+            }
+            else {
+                getElementsByClassName = function (className, tag, elm) {
+                    tag = tag || "*";
+                    elm = elm || document;
+                    var classes = className.split(" "),
+                            classesToCheck = [],
+                            elements = (tag === "*" && elm.all)? elm.all : elm.getElementsByTagName(tag),
+                            current,
+                            returnElements = [],
+                            match;
+                    for(var k=0, kl=classes.length; k<kl; k+=1){
+                        classesToCheck.push(new RegExp("(^|\\s)" + classes[k] + "(\\s|$)"));
+                    }
+                    for(var l=0, ll=elements.length; l<ll; l+=1){
+                        current = elements[l];
+                        match = false;
+                        for(var m=0, ml=classesToCheck.length; m<ml; m+=1){
+                            match = classesToCheck[m].test(current.className);
+                            if (!match) {
+                                break;
+                            }
+                        }
+                        if (match) {
+                            returnElements.push(current);
+                        }
+                    }
+                    return returnElements;
+                };
+            }
+            return getElementsByClassName(className, tag, elm);
+        };
+        var contentCurrentId=1;  //当前海报
+        var categoryCurrentId=1;    // 当前记录 菜单栏上下移动时赋值
+        var filterCurrentId=0;  // 当前栏目筛选项 上下左右移动筛选项时赋值
+        var totalCount=getElementsByClassName("item","li",document).length;           //栏目数
+        // 每个海报高度
+        var singleHeight = getid("item-area-"+categoryCurrentId).getElementsByTagName("li")[0].offsetHeight;
+        //每个类别的内容数
+        var totalContentCount=getElementsByClassName("item-content-sub","div",getid("item-area-"+categoryCurrentId)).length;
+        var totalFilterCount=getElementsByClassName("filter-sub","li",document).length;  //总的栏目筛选项;
+        var currentType="content";  //初始焦点呈现区左上侧第一张海报
+        var titleLength =getElementsByClassName("scroll_div","div",document)[0].offsetWidth;
+        //添加选中样式
+        var flag="";
+        var scrollFlag={};
+
+
+
+        function addClass(className,currentId,tag) {
+            if(currentType=="content"){
+                var itemContentSub = getElementsByClassName("item-content-sub","div",getid("item-area-"+categoryCurrentId))[currentId-1];
+                itemContentSub.className+=" active";
+                //视频标题左右滚动
+                flag="true";
+                if(itemContentSub.querySelector(".item-msg")){
+                    scrollFlag = getElementsByClassName("scroll_begin","p",itemContentSub)[0];
+                    if(scrollFlag.offsetWidth > getElementsByClassName("scroll_div","div",itemContentSub)[0].offsetWidth){
+                        var scroll_begin = getElementsByClassName("scroll_begin","p",itemContentSub)[0];
+                        var scroll_end = getElementsByClassName("scroll_end","p",itemContentSub)[0];
+                        var scroll_div = getElementsByClassName("scroll_div","div",itemContentSub)[0];
+                        scrollAble(scroll_begin,scroll_end,scroll_div,flag,scrollFlag);
+                    }
+                }
+            }
+            getElementsByClassName(className,tag,document)[currentId-1].className+=" active";
+        }
+        // 给第一张海报加定时器
+        var firstInterval = getid("item-area-1");
+        if(getElementsByClassName("scroll_begin","p",firstInterval)[0].offsetWidth > getElementsByClassName("scroll_div","div",firstInterval)[0].offsetWidth){
+            var scroll_begin = getElementsByClassName("scroll_begin","p",firstInterval)[0];
+            var scroll_end = getElementsByClassName("scroll_end","p",firstInterval)[0];
+            var scroll_div = getElementsByClassName("scroll_div","div",firstInterval)[0];
+            scrollAble(scroll_begin,scroll_end,scroll_div,flag,scrollFlag);
+        }
+
+        /*
+         * currentType="content"  当前焦点在呈现区上
+         * currentType="menu"   当前焦点在左侧菜单上
+         * currentType="filter"  当前焦点在左侧筛选按钮上
+         * currentType="filterItem"  当前焦点在筛选内容上
+         * */
+
+        document.onkeydown=jumpPage;
+        function getid(id){
+            return document.getElementById(id);
+        }
+        function jumpPage(event) {
+            event = event || window.event;
+            if (event.keyCode==37 || event.keyCode=="KEY_LEFT"){
+                fun_left();//左
+            }
+            if (event.keyCode==38 || event.keyCode=="KEY_UP"){
+                fun_up();//上
+            }
+            if (event.keyCode==39 || event.keyCode=="KEY_RIGHT" ){
+                fun_right();//右
+            }
+            if (event.keyCode==40 || event.keyCode=="KEY_DOWN" ){
+                fun_down();//下
+            }
+            if (event.keyCode==13 || event.keyCode=="KEY_ENTER"){
+                fun_enter();//enter
+            }
+            if (event.keyCode==8){
+                fun_back();//BackSpace
+            }
+            if (event.keyCode==65){
+                warn_alert();//按A字母键弹框，测试用
+            }
+        }
+        // 左键
+        function fun_left(){
+            // 内容区，并且不是第一个
+            if( currentType=="content" && contentCurrentId!=1 ){
+                removeClass("active","item-content-sub",contentCurrentId,"div");
+                contentCurrentId=contentCurrentId-1;
+                addClass("item-content-sub",contentCurrentId,"div");
+
+                //需要移动滚动条的时候
+                if(contentCurrentId < totalContentCount-4){
+                    moveScroll("up",categoryCurrentId,contentCurrentId  );
+                }
+
+            }else if(currentType=="content" && contentCurrentId==1 ){
+                removeClass("active","item-content-sub",contentCurrentId,"div");
+                currentType="menu";
+                addClass("item-child",categoryCurrentId,"span");
+            }else if(currentType=="filterItem" && filterCurrentId!=1){
+                removeClass("active","filter-sub",filterCurrentId,"li");
+                filterCurrentId=filterCurrentId-1;
+                addClass("filter-sub",filterCurrentId,"li");
+            }else if(currentType=="filterItem" && filterCurrentId==1){
+                removeClass("active","filter-sub",filterCurrentId,"li");
+                currentType="filter";
+            }
+        }
+        // 右键
+        function fun_right(){
+            if( currentType=="content" && contentCurrentId<totalContentCount ){
+                removeClass("active","item-content-sub",contentCurrentId,"div");
+                contentCurrentId=contentCurrentId+1;
+                addClass("item-content-sub",contentCurrentId,"div");
+                //需要移动滚动条的时候
+                if(contentCurrentId > 6){
+                    moveScroll("down",categoryCurrentId,contentCurrentId);
+                }
+            }else if(currentType=="menu" ){
+                currentType="content";
+                contentCurrentId=1;
+                removeClass("active","item-content-sub",contentCurrentId,"div");
+                addClass("item-content-sub",contentCurrentId,"div");
+            }else if(currentType=="filter" ){
+                if(getid("filter-items").getAttribute("class")==" content-block"){
+                    currentType="filterItem";
+                    filterCurrentId = 1;
+                    addClass("filter-sub",filterCurrentId,"li");
+                }else{
+                    currentType="content";
+                    contentCurrentId=1;
+                    getid("item-filter").setAttribute("class", "");
+                    addClass("item-content-sub",contentCurrentId,"div");
+                }
+            } else if(currentType=="filterItem" && filterCurrentId<totalFilterCount){
+
+                if(filterCurrentId == 0){
+                    filterCurrentId = 1;
+                    addClass("filter-sub",filterCurrentId,"li");
+                }else{
+                    removeClass("active","filter-sub",filterCurrentId,"li");
+                    filterCurrentId=filterCurrentId+1;
+                    addClass("filter-sub",filterCurrentId,"li");
+                }
+
+            }
+        }
+        // 上键
+        function fun_up(){
+            if( currentType=="content" && contentCurrentId>2){
+                removeClass("active","item-content-sub",contentCurrentId,"div");
+                contentCurrentId=contentCurrentId-2;
+                addClass("item-content-sub",contentCurrentId,"div");
+                /* 滚动条向上移动*/
+                moveScroll("up",categoryCurrentId,contentCurrentId);
+            }else if( currentType=="content" && contentCurrentId<=2){
+                return;
+            }else if(currentType=="menu" && categoryCurrentId!=1 ){
+                removeClass("active","item-child",categoryCurrentId,"span");
+                // 切换内容区
+                getid("item-area-"+categoryCurrentId).setAttribute("class", "item-area");
+                categoryCurrentId=categoryCurrentId-1;
+                addClass("item-child",categoryCurrentId,"span");
+                getid("item-area-"+categoryCurrentId).className+=" content-block";
+                contentCurrentId=1;
+                //更新内容数量
+                var itemArea = getid("item-area-"+categoryCurrentId);
+                totalContentCount = getElementsByClassName("item-content-sub","div",itemArea).length;
+            }else if(currentType=="menu" && categoryCurrentId==1 ){
+                currentType="filter";
+                removeClass("active","item-child",categoryCurrentId,"span");
+                getid("item-filter").className+=" active";
+
+            }else if(currentType=="filterItem" && filterCurrentId>9){
+                removeClass("active","filter-sub",filterCurrentId,"li");
+                filterCurrentId=filterCurrentId-9;
+                addClass("filter-sub",filterCurrentId,"li");
+            }
+        }
+        // 下键
+        function fun_down(){
+            if(currentType=="filter"){
+                getid("item-filter").setAttribute("class", "");
+                filterItemHide();
+                currentType="menu";
+                contentCurrentId = 1;
+                categoryCurrentId = 1;
+                addClass("item-child",categoryCurrentId,"span");
+            }else if( currentType=="content" && contentCurrentId<= (totalContentCount - 2) ){
+                removeClass("active","item-content-sub",contentCurrentId,"div");
+                contentCurrentId=contentCurrentId+2;
+                if(contentCurrentId>totalContentCount){
+                    contentCurrentId=contentCurrentId-2;
+                    addClass("item-content-sub",contentCurrentId,"div");
+                }else{
+                    addClass("item-content-sub",contentCurrentId,"div");
+                }
+                /* 滚动条向下移动*/
+                moveScroll("down",categoryCurrentId,contentCurrentId);
+
+            }else if(currentType=="menu" && categoryCurrentId!=totalCount ){
+                removeClass("active","item-child",categoryCurrentId,"span");
+                getid("item-area-"+categoryCurrentId).setAttribute("class", "item-area");
+
+                categoryCurrentId=categoryCurrentId+1;
+                addClass("item-child",categoryCurrentId,"span");
+                getid("item-area-"+categoryCurrentId).className+=" content-block";
+                contentCurrentId=1;
+                //更新内容数量
+                var itemArea = getid("item-area-"+categoryCurrentId);
+                totalContentCount = getElementsByClassName("item-content-sub","div",itemArea).length;
+
+            }else if(currentType=="filterItem" && filterCurrentId<=(totalFilterCount-9)){
+                removeClass("active","filter-sub",filterCurrentId,"li");
+                filterCurrentId=filterCurrentId+9;
+                addClass("filter-sub",filterCurrentId,"li");
+            }
+        }
+        // 确认键
+        function fun_enter(){
+            if(currentType=="content"){
+                alert("type:"+currentType+" 视频类型："+document.getElementById("item-area-"+categoryCurrentId).id+" =>Id:"+contentCurrentId)
+            }else if(currentType=="filter"){
+                currentType="filterItem";
+                getid("filter-items").className+=" content-block";
+            }
+        }
+        // 返回键
+        function fun_back() {
+            if(currentType=="filterItem" || currentType=="filter"){
+                filterItemHide();
+                currentType="filter"
+            }
+        }
+
+        //改变选中项样式
+        function removeClass(removeClassName,className,currentId,tag){
+            // 获取当前选中项的class值
+            var classNames =getElementsByClassName(className,tag,document)[currentId-1].className;
+            classNames=classNames.replace(/(^\s*)|(\s*$)/g, "");
+            var classNameArr = classNames.split(" ");
+            var okClassNames = "";
+            for (var ii = 0; ii < classNameArr.length; ii++) {
+                if(!(classNameArr[ii]==removeClassName)){
+                    okClassNames+=" "+classNameArr[ii];
+                }
+            }
+            if(currentType=="content"){
+                var itemContentSub = getElementsByClassName("item-content-sub","div",getid("item-area-"+categoryCurrentId))[currentId-1];
+                itemContentSub.className=okClassNames;
+                //停止视频标题左右滚动
+                flag="false";
+                if(itemContentSub.querySelector(".item-msg")){
+                    if(getElementsByClassName("scroll_begin","p",itemContentSub)[0].offsetWidth > getElementsByClassName("scroll_div","div",itemContentSub)[0].offsetWidth){
+                        var scroll_begin = getElementsByClassName("scroll_begin","p",itemContentSub)[0];
+                        var scroll_end = getElementsByClassName("scroll_end","p",itemContentSub)[0];
+                        var scroll_div = getElementsByClassName("scroll_div","div",itemContentSub)[0];
+                        scrollAble(scroll_begin,scroll_end,scroll_div,flag,scrollFlag);
+                    }
+                }
+
+
+            }
+            getElementsByClassName(className,tag,document)[currentId-1].className=okClassNames;
+        }
+
+        //滚动条移动
+        function moveScroll(dir,categoryCurrentId,contentCurrentId) {
+            //当前选中的节目项
+            var itemContentSub = getElementsByClassName("item-content-sub","div",getid("item-area-"+categoryCurrentId))[contentCurrentId-1];
+            //当前项到父元素顶部的距离
+            var topDistance = itemContentSub.parentNode.getBoundingClientRect().top;
+            // 海报内容区
+            var itemContent = getid("item-content");
+            // 每次点击滚动条移动的距离
+            if(dir=="down" && topDistance >= singleHeight*2){
+                // 动态改变滚动条位置(向下)
+                itemContent.scrollTop += singleHeight;
+            }else if(dir=="up" && topDistance<0){
+                // 动态改变滚动条位置(向上)
+                itemContent.scrollTop -= singleHeight;
+            }
+        }
+
+        // 视频标题左右滚动
+
+        function scrollAble(scroll_begin,scroll_end,scroll_div,flag,scrollFlag) {
+            var speed=20;
+            scroll_end.innerHTML= "<span style='display: inline-block' class='title-length'></span>"+scroll_begin.innerHTML+"<span style='display: inline-block' class='title-length'></span>";
+            getElementsByClassName("title-length","span",document)[0].style.width=titleLength+"px";
+            getElementsByClassName("title-length","span",document)[1].style.width=titleLength+"px";
+
+            function stopScroll() {
+                clearInterval(scrollFlag.MyMar);
+            }
+            if(flag=="false"){
+                stopScroll();
+                scroll_div.scrollLeft=0;
+            }else{
+                scrollFlag.MyMar=setInterval(Marquee,speed);
+                function Marquee(){
+                    var leftWidth = scroll_end.offsetWidth + scroll_begin.offsetWidth - scroll_div.offsetWidth;
+                    if(leftWidth <= scroll_div.scrollLeft){
+                        scroll_div.scrollLeft-=(scroll_end.offsetWidth - scroll_div.offsetWidth);
+                    } else{
+                        scroll_div.scrollLeft++;
+                    }
+                }
+            }
+        }
+        //按A字母键弹框，测试用
+        function warn_alert() {
+            getid("warn-message").style.display="block";
+            setTimeout(function(){
+                getid("warn-message").style.display="none";
+            }, 3000);
+        }
+        //筛选内容消失
+        function filterItemHide() {
+            if(filterCurrentId > 0){
+                removeClass("active","filter-sub",filterCurrentId,"li");
+                getid("filter-items").setAttribute("class", "");
+                filterCurrentId=0;
+            }else{
+                getid("filter-items").setAttribute("class", "");
+            }
+
+        }
+
+    };
+
+</script>
+</html>
